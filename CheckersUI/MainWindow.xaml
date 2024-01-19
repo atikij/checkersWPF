@@ -1,0 +1,25 @@
+﻿<Window x:Class="CheckersUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CheckersUI"
+        mc:Ignorable="d"
+        Title="Game" SizeToContent="Height" Width="1000" Background="#FF32363C"
+        WindowStartupLocation="CenterScreen">
+    <Viewbox>
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="Assets/DevBoard.png"/>
+            </Grid.Background>
+
+            <UniformGrid x:Name="BoardGrid" Rows="8" Columns="8" 
+                         Height="1000" Width="1000" RenderOptions.BitmapScalingMode="HighQuality">
+            </UniformGrid>
+
+            <UniformGrid x:Name="HighLightGrid" Rows="8" Columns="8" 
+                         Height="1000" Width="1000">
+            </UniformGrid>
+        </Grid>
+    </Viewbox>
+</Window>

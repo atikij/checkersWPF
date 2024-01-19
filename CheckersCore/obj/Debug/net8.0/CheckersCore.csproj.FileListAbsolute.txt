@@ -1,0 +1,11 @@
+D:\CodeProjects\CSharp\Checkers\CheckersCore\bin\Debug\net8.0\CheckersCore.deps.json
+D:\CodeProjects\CSharp\Checkers\CheckersCore\bin\Debug\net8.0\CheckersCore.dll
+D:\CodeProjects\CSharp\Checkers\CheckersCore\bin\Debug\net8.0\CheckersCore.pdb
+D:\CodeProjects\CSharp\Checkers\CheckersCore\obj\Debug\net8.0\CheckersCore.GeneratedMSBuildEditorConfig.editorconfig
+D:\CodeProjects\CSharp\Checkers\CheckersCore\obj\Debug\net8.0\CheckersCore.AssemblyInfoInputs.cache
+D:\CodeProjects\CSharp\Checkers\CheckersCore\obj\Debug\net8.0\CheckersCore.AssemblyInfo.cs
+D:\CodeProjects\CSharp\Checkers\CheckersCore\obj\Debug\net8.0\CheckersCore.csproj.CoreCompileInputs.cache
+D:\CodeProjects\CSharp\Checkers\CheckersCore\obj\Debug\net8.0\CheckersCore.dll
+D:\CodeProjects\CSharp\Checkers\CheckersCore\obj\Debug\net8.0\refint\CheckersCore.dll
+D:\CodeProjects\CSharp\Checkers\CheckersCore\obj\Debug\net8.0\CheckersCore.pdb
+D:\CodeProjects\CSharp\Checkers\CheckersCore\obj\Debug\net8.0\ref\CheckersCore.dll

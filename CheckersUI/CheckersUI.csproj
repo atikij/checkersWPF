@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\BlackChecker.png" />
+    <None Remove="Assets\Board.png" />
+    <None Remove="Assets\DevBoard.png" />
+    <None Remove="Assets\HighLightGreen.png" />
+    <None Remove="Assets\RedChecker.png" />
+    <None Remove="Assets\WhiteChecker.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CheckersCore\CheckersCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\BlackChecker.png" />
+    <Resource Include="Assets\Board.png" />
+    <Resource Include="Assets\DevBoard.png" />
+    <Resource Include="Assets\HighLightGreen.png" />
+    <Resource Include="Assets\WhiteChecker.png" />
+  </ItemGroup>
+
+</Project>
