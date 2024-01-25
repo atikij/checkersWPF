@@ -1,11 +1,10 @@
 ﻿using CheckersCore.Core.Player;
-using System.Runtime.InteropServices;
 
 namespace CheckersCore.Core
 {
     public class Board
     {
-        public static readonly Board Instance = new Board();
+        public static Board Instance { get; private set; } = new Board();
 
         private Checker[,] _grid = new Checker[8, 8];
 
@@ -40,6 +39,11 @@ namespace CheckersCore.Core
         public static bool IsEmpty(Position pos)
         {
             return Board.Instance[pos.X, pos.Y] != null && Board.Instance[pos.X, pos.Y].Color == Color.None;
+        }
+
+        public static void ResetBoard()
+        {
+            Instance = new Board();
         }
 
         private void _initializeBoard()
@@ -88,8 +92,6 @@ namespace CheckersCore.Core
             this[2, 7] = new Checker(Color.Black);
             this[4, 7] = new Checker(Color.Black);
             this[6, 7] = new Checker(Color.Black);
-
-
 
             #endregion Black
         }

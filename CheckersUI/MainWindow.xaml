@@ -10,7 +10,7 @@
     <Viewbox>
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="Assets/DevBoard.png"/>
+                <ImageBrush ImageSource="Assets/Board.png"/>
             </Grid.Background>
 
             <UniformGrid x:Name="BoardGrid" Rows="8" Columns="8" 

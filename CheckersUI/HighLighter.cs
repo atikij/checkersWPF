@@ -19,12 +19,6 @@ namespace CheckersUI
             foreach (int index in Move.GetAvaibleMovesIndex(checker, checker.Color == Color.Black, grid.Rows))
                 ((Image)((MainWindow)Application.Current.MainWindow).HighLightGrid.Children[index]).Opacity = 0;
         }
-        
-        public static void HideHighLight(List<int> indexes)
-        {
-            foreach (int index in indexes)
-                ((Image)((MainWindow)Application.Current.MainWindow).HighLightGrid.Children[index]).Opacity = 0;
-        }
 
         public static void ShowHighLight(Checker checker)
         {

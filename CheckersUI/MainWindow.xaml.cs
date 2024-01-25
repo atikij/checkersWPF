@@ -5,16 +5,17 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Xml.Linq;
 using ColorChecker = CheckersCore.Core.Player.Color;
 
 namespace CheckersUI
 {
     public partial class MainWindow : Window
     {
+        public static GameState GameState = new GameState(12);
+
         public Dictionary<Image, Position> Positions = new Dictionary<Image, Position>();
 
-        public Image[,] Images = new Image[8, 8];
+        private Image[,] _images = new Image[8, 8];
 
         private Checker _selectedChecker;
 
@@ -22,17 +23,29 @@ namespace CheckersUI
         {
             InitializeComponent();
 
-            _initMainBoard();
-            
-            _initHighLighterBoard();
+            GameState.StartGame();
+        }
 
-            _drawFromBoard();
+        public void ResetGame()
+        {
+            HighLightGrid.Children.Clear();
+            BoardGrid.Children.Clear();
+            Positions.Clear();
+
+            _initMainBoard();
+
+            _initHighLightBoard();
+
+            _drawMainBoard();
         }
 
         private void _changeImage(Checker checker, Position newPosition, Position oldPosition)
         {
-            Images[oldPosition.X, oldPosition.Y].Source = _getImage(new Checker(ColorChecker.None));
-            Images[newPosition.X, newPosition.Y].Source = _getImage(checker);
+            if (newPosition == null || oldPosition == null)
+                return;
+
+            _images[oldPosition.X, oldPosition.Y].Source = _getImage(new Checker(ColorChecker.None));
+            _images[newPosition.X, newPosition.Y].Source = _getImage(checker);
         }
 
         private void _selectChecker(Checker? checker)
@@ -41,7 +54,7 @@ namespace CheckersUI
             _selectedChecker = checker;
         }
 
-        private void _initHighLighterBoard() 
+        private void _initHighLightBoard() 
         {
             for (int y = 0; y < 8; y++)
             {
@@ -71,14 +84,14 @@ namespace CheckersUI
                 {
                     Image noneImage = new Image();
                     
-                    Images[x, y] = noneImage;
+                    _images[x, y] = noneImage;
 
                     BoardGrid.Children.Add(noneImage);
                 }
             }
         }
 
-        private void _drawFromBoard() 
+        private void _drawMainBoard() 
         {
             for (int y = 0; y < 8; y++)
             {
@@ -87,7 +100,7 @@ namespace CheckersUI
                     Checker checker = Board.Instance[x, y];
                     checker.SetPosition(x, y);
 
-                    Images[x, y].Source = _getImage(checker);
+                    _images[x, y].Source = _getImage(checker);
                 }
             }
         }
@@ -98,20 +111,33 @@ namespace CheckersUI
                 return;
 
             Checker checker = _selectedChecker;
+
             Position oldPosition = checker.GetPosition();
             Position selectedPosition = Positions[(Image)sender];
 
-            List<int> avaibleMovesIndexes = Move.GetAvaibleMovesIndex(checker, checker.Color == ColorChecker.Black, HighLightGrid.Rows);
-
-            if (!Move.MoveChecker(checker, selectedPosition, out Checker brokenChecker))
+            if (!Move.CanMoveChecker(checker, selectedPosition, out Checker brokenChecker))
                 return;
+
+            HighLighter.HideHighLight(checker);
+            
+            if (brokenChecker != null)
+            {
+                GameState.Delete(brokenChecker);
+
+                brokenChecker.DeleteFromGame();
+
+                _changeImage(brokenChecker, brokenChecker.GetPosition(), brokenChecker.GetPosition());
+            }
+
+            Move.MoveChecker(checker, selectedPosition, out bool switchTurn);
 
             _changeImage(checker, selectedPosition, oldPosition);
 
-            if (brokenChecker != null)
-                _changeImage(brokenChecker, brokenChecker.GetPosition(), brokenChecker.GetPosition());
+            if (switchTurn || brokenChecker == null)
+                GameState.SwitchTurn();
 
-            HighLighter.HideHighLight(avaibleMovesIndexes);
+            if (GameState.GameIsEnded(out _))
+                GameState.StartGame();
 
             _selectChecker(null);
         }
@@ -127,6 +153,9 @@ namespace CheckersUI
             if (checker == null || checker.Color == ColorChecker.None)
                 return;
 
+            if (GameState.Turn != checker.Color)
+                return;
+
             HighLighter.ShowHighLight(checker);
 
             _selectChecker(checker);
@@ -134,11 +163,13 @@ namespace CheckersUI
 
         private ImageSource _getImage(Checker checker)
         {
-            if (checker.Color == ColorChecker.None) 
+            if (checker == null || checker.Color == ColorChecker.None)
                 return new BitmapImage(new Uri("", UriKind.Relative));
-            else
-                return checker.Color == ColorChecker.White ? new BitmapImage(new Uri("Assets/WhiteChecker.png", UriKind.Relative)) 
-                                                           : new BitmapImage(new Uri("Assets/BlackChecker.png", UriKind.Relative));
+
+            if (checker.IsQueen)
+                return checker.Color == ColorChecker.White ? new BitmapImage(new Uri("Assets/WhiteCheckerQueen.png", UriKind.Relative)) : new BitmapImage(new Uri("Assets/BlackCheckerQueen.png", UriKind.Relative));
+
+            return checker.Color == ColorChecker.White ? new BitmapImage(new Uri("Assets/WhiteChecker.png", UriKind.Relative)) : new BitmapImage(new Uri("Assets/BlackChecker.png", UriKind.Relative));
         }
     }
 }

@@ -22,3 +22,4 @@ D:\CodeProjects\CSharp\Checkers\CheckersUI\bin\Debug\net8.0-windows\CheckersCore
 D:\CodeProjects\CSharp\Checkers\CheckersUI\bin\Debug\net8.0-windows\CheckersCore.pdb
 D:\CodeProjects\CSharp\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.csproj.AssemblyReference.cache
 D:\CodeProjects\CSharp\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.csproj.CopyComplete
+D:\CodeProjects\CSharp\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.sourcelink.json

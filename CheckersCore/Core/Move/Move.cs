@@ -1,33 +1,56 @@
-﻿
-using CheckersCore.Core.Player;
-using System.Collections.Generic;
+﻿using CheckersCore.Core.Player;
 
 namespace CheckersCore.Core.Move
 {
     public static class Move
     {
-        public static bool MoveChecker(Checker checker, Position toPosition, out Checker brokenChecker)
+        private static readonly Dictionary<Color, List<Position>> _positionsToQueen = new Dictionary<Color, List<Position>>()
         {
-            brokenChecker = null;
+            { Color.White, new List<Position> () 
+                {
+                    new Position(0, 7),
+                    new Position(1, 7),
+                    new Position(2, 7),
+                    new Position(3, 7),
+                    new Position(4, 7),
+                    new Position(5, 7),
+                    new Position(6, 7),
+                    new Position(7, 7),
+                } 
+            },
+            { Color.Black, new List<Position> ()
+                {
+                    new Position(0, 0),
+                    new Position(1, 0),
+                    new Position(2, 0),
+                    new Position(3, 0),
+                    new Position(4, 0),
+                    new Position(5, 0),
+                    new Position(6, 0),
+                    new Position(7, 0),
+                } 
+            },
+        };
 
-            if (checker == null)
-                return false;
-
-            List<(Position, Checker)> checkersToBreak = new List<(Position, Checker)>();
-
-            List<Position> avaibleMoves = Move.GetAvaibleMovesPositions(checker, checker.Color == Color.Black, out checkersToBreak);
-
-            if (avaibleMoves.Find(x => x.X == toPosition.X && x.Y == toPosition.Y) == null)
-                return false;
-
-            checker.SetPosition(toPosition);
+        public static bool CanMoveChecker(Checker checker, Position toPosition, out Checker brokenChecker)
+        {
+            List<Position> avaibleMoves = Move.GetAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
 
             brokenChecker = checkersToBreak.Find(x => x.Item1.X == toPosition.X && x.Item1.Y == toPosition.Y).Item2;
 
-            if (brokenChecker != null)
-                brokenChecker.DeleteFromGame();
+            return avaibleMoves.Find(x => x.X == toPosition.X && x.Y == toPosition.Y) != null;
+        }
 
-            return true;
+        public static void MoveChecker(Checker checker, Position toPosition, out bool switchTurn)
+        {
+            checker?.SetPosition(toPosition);
+
+            Move.GetAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
+
+            switchTurn = checkersToBreak.Count == 0;
+
+            if (_positionsToQueen[checker.Color].Find(p => p.X == toPosition.X && p.Y == toPosition.Y) != null)
+                checker.SetToQueen();
         }
 
         /// <summary>
@@ -40,56 +63,57 @@ namespace CheckersCore.Core.Move
         /// <returns></returns>
         public static List<Position> GetAvaibleMovesPositions(Checker selectedChecker, bool downCheckers, out List<(Position, Checker)> checkersToBreak, int countRowsGrid = 8)
         {
-            checkersToBreak = new List<(Position, Checker)>();
+            List<Position> result = new List<Position>();
 
-            List <Position> result = new List<Position>();
+            checkersToBreak = new List<(Position, Checker)>();
 
             Position selectedCheckerPosition = selectedChecker.GetPosition();
 
             if (selectedChecker.IsQueen)
             {
-                int[,] directions = { { 1, 1 }, { -1, 1 }, { 1, -1 }, { -1, -1 } };
+                Dictionary<Directional, List<Position>> movesQueen = _getAllQueenMoves(selectedChecker, countRowsGrid);
 
-                for (int i = 0; i < directions.GetLength(0); i++)
+                foreach (var positions in movesQueen.Values)
                 {
-                    int dx = directions[i, 0];
-                    int dy = directions[i, 1];
-
-                    for (int j = 1; j < countRowsGrid; j++)
+                    for (int i = 0; i < positions.Count; i++)
                     {
-                        int x = selectedCheckerPosition.X + j * dx;
-                        int y = selectedCheckerPosition.Y + j * dy;
+                        Position pos = positions[i];
 
-                        Position tempPos = new Position(x, y);
-
-                        // TODO: check checkers in lines
-
-                        if (Board.InBound(tempPos) && Board.IsEmpty(tempPos))
+                        // Проверка если на пути есть своя шашка, то следующие ходы скипаются
+                        if (!Board.IsEmpty(pos))
                         {
-                            result.Add(tempPos);
-                        }
-                        else // Detect checker
-                        {
-                            if (!Board.IsEmpty(tempPos))
+                            Checker checkerInPos = Board.Instance[pos.X, pos.Y];
+
+                            if (selectedChecker.Color == checkerInPos.Color) 
+                                break;
+
+                            // Будем делать проверку на то, есть ли после шашки на позиции (pos) свободная клетка 
+                            // Если все хорошо, мы делам проверку на тоже самое
+                            if (i + 1 < positions.Count)
                             {
-                                Checker checkerInPos = Board.Instance[tempPos.X, tempPos.Y];
+                                Position nextPos = positions[i + 1];
 
-                                if (checkerInPos != null && checkerInPos.Color != selectedChecker.Color)
+                                // Если на пути есть другая шашка после первой, то мы скипает следующие позиции
+                                if (Board.InBound(nextPos) && !Board.IsEmpty(nextPos))
+                                    break;
+
+                                for (int j = i + 1; j < positions.Count; j++)
                                 {
-                                    // Don't change
-                                    Position moveAfterChecker = downCheckers ? new Position(tempPos.X - 1, tempPos.Y - 1) : new Position(tempPos.X - 1, tempPos.Y + 1);
+                                    nextPos = positions[j];
 
-                                    if (Board.IsEmpty(moveAfterChecker))
-                                    {
-                                        checkersToBreak.Add((tempPos, checkerInPos));
-
-                                        result.Add(tempPos);
-                                    }
+                                    if (Board.InBound(nextPos) && Board.IsEmpty(nextPos))
+                                        checkersToBreak.Add((nextPos, checkerInPos));
                                 }
                             }
                         }
+                        else
+                        {
+                            result.Add(pos);
+                        }
                     }
                 }
+
+                return result;
             }
 
             Position firstMove = downCheckers ? new Position(selectedCheckerPosition.X - 1, selectedCheckerPosition.Y - 1) : new Position(selectedCheckerPosition.X - 1, selectedCheckerPosition.Y + 1);
@@ -156,6 +180,81 @@ namespace CheckersCore.Core.Move
                 result.Add(Position.ToIndex(pos));
 
             return result;
+        }
+
+        private static Dictionary<Directional, List<Position>> _getAllQueenMoves(Checker checker, int countRowsGrid = 8)
+        {
+            Directional[] directions =
+            {
+                new Directional(DirectionHorizontal.Left, DirectionVertical.Up),
+                new Directional(DirectionHorizontal.Right, DirectionVertical.Up),
+                new Directional(DirectionHorizontal.Left, DirectionVertical.Down),
+                new Directional(DirectionHorizontal.Right, DirectionVertical.Down),
+            };
+
+            Dictionary<Directional, List<Position>> result = new Dictionary<Directional, List<Position>>()
+            {
+                { directions[0], new List<Position>() },
+                { directions[1], new List<Position>() },
+                { directions[2], new List<Position>() },
+                { directions[3], new List<Position>() }
+            };
+
+            Position selectedCheckerPosition = checker.GetPosition();
+
+            for (int i = 0; i < directions.GetLength(0); i++)
+            {
+                Directional direction = directions[i];
+
+                int dx = direction.IntLeftRight;
+                int dy = direction.IntUpDown;
+
+                for (int j = 1; j < countRowsGrid; j++)
+                {
+                    int xPos = selectedCheckerPosition.X + j * dx;
+                    int yPos = selectedCheckerPosition.Y + j * dy;
+
+                    Position tempPos = new Position(xPos, yPos);
+
+                    // + If 2 checker in a row u, can't go throw 'em
+                    // + If 1 checker on the way to some direction, u can't go though your team checker 
+
+                    if (Board.InBound(tempPos))
+                        result[direction].Add(tempPos);                    
+                }
+            }
+
+            return result;
+        }
+
+        struct Directional
+        {
+            public DirectionHorizontal LeftRight;
+            public DirectionVertical UpDown;
+
+            public int IntLeftRight;
+            public int IntUpDown;
+
+            public Directional(DirectionHorizontal leftRight, DirectionVertical upDown)
+            {
+                LeftRight = leftRight;
+                UpDown = upDown;
+
+                IntLeftRight = (int)LeftRight;
+                IntUpDown = (int)UpDown;
+            }
+        }
+
+        enum DirectionHorizontal
+        {
+            Left = -1,
+            Right = 1,
+        }
+
+        enum DirectionVertical
+        {
+            Down = -1,
+            Up = 1,
         }
     }
 }
