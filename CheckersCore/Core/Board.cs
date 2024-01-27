@@ -35,7 +35,6 @@ namespace CheckersCore.Core
         {
             return pos.X <= 7 && pos.Y <= 7 && pos.X >= 0 && pos.Y >= 0;
         }
-
         public static bool IsEmpty(Position pos)
         {
             return Board.Instance[pos.X, pos.Y] != null && Board.Instance[pos.X, pos.Y].Color == Color.None;

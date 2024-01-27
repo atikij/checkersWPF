@@ -47,6 +47,8 @@ namespace CheckersUI
                 return true;
             }
 
+            // check to end moves
+
             return false;
         }
 

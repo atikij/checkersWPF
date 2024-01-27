@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CheckersCore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b7f08b957dadf90f179581dba619d0a6bbc45e92")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+20343d0eea97859c21a0c2c99e6d2e579ee73def")]
 [assembly: System.Reflection.AssemblyProductAttribute("CheckersCore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CheckersCore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

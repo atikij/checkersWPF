@@ -34,34 +34,36 @@ namespace CheckersCore.Core.Move
 
         public static bool CanMoveChecker(Checker checker, Position toPosition, out Checker brokenChecker)
         {
-            List<Position> avaibleMoves = Move.GetAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
+            List<Position> avaibleMoves = Move._getAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
 
-            brokenChecker = checkersToBreak.Find(x => x.Item1.X == toPosition.X && x.Item1.Y == toPosition.Y).Item2;
+            brokenChecker = checkersToBreak.Find(x => x.Item1 == toPosition).Item2;
 
-            return avaibleMoves.Find(x => x.X == toPosition.X && x.Y == toPosition.Y) != null;
+            return avaibleMoves.Contains(toPosition);
         }
 
         public static void MoveChecker(Checker checker, Position toPosition, out bool switchTurn)
         {
             checker?.SetPosition(toPosition);
 
-            Move.GetAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
+            Move._getAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
 
             switchTurn = checkersToBreak.Count == 0;
 
-            if (_positionsToQueen[checker.Color].Find(p => p.X == toPosition.X && p.Y == toPosition.Y) != null)
+            if (_positionsToQueen[checker.Color].Contains(toPosition))
                 checker.SetToQueen();
         }
 
-        /// <summary>
-        /// Get avaible moves
-        /// </summary>
-        /// <param name="selectedChecker"></param>
-        /// <param name="downCheckers"></param>
-        /// <param name="checkersToBreak"><c>Item1</c> - mean position where a player need to jump to break other checker, <c>Item2 - checker to break if player jumped to need position</c></param>
-        /// <param name="countRowsGrid"></param>
-        /// <returns></returns>
-        public static List<Position> GetAvaibleMovesPositions(Checker selectedChecker, bool downCheckers, out List<(Position, Checker)> checkersToBreak, int countRowsGrid = 8)
+        public static List<int> GetAvaibleMovesIndex(Checker checker, bool downCheckers, int countRowsGrid = 8)
+        {
+            List<int> result = new List<int>();
+
+            foreach (Position pos in _getAvaibleMovesPositions(checker, downCheckers, out _, countRowsGrid))
+                result.Add(Position.ToIndex(pos));
+
+            return result;
+        }
+
+        private static List<Position> _getAvaibleMovesPositions(Checker selectedChecker, bool downCheckers, out List<(Position, Checker)> checkersToBreak, int countRowsGrid = 8)
         {
             List<Position> result = new List<Position>();
 
@@ -131,7 +133,6 @@ namespace CheckersCore.Core.Move
 
                     if (checkerInPos != null && checkerInPos.Color != selectedChecker.Color)
                     {
-                        // Don't change
                         Position moveAfterChecker = downCheckers ? new Position(firstMove.X - 1, firstMove.Y - 1) : new Position(firstMove.X - 1, firstMove.Y + 1);
 
                         if (Board.IsEmpty(moveAfterChecker))
@@ -156,7 +157,6 @@ namespace CheckersCore.Core.Move
 
                     if (checkerInPos != null && checkerInPos.Color != selectedChecker.Color)
                     {
-                        // Don't change
                         Position moveAfterChecker = downCheckers ? new Position(secondMove.X + 1, secondMove.Y - 1) : new Position(secondMove.X + 1, secondMove.Y + 1);
 
                         if (Board.IsEmpty(moveAfterChecker))
@@ -168,16 +168,6 @@ namespace CheckersCore.Core.Move
                     }
                 }
             }
-
-            return result;
-        }
-
-        public static List<int> GetAvaibleMovesIndex(Checker checker, bool downCheckers, int countRowsGrid = 8)
-        {
-            List<int> result = new List<int>();
-
-            foreach (Position pos in GetAvaibleMovesPositions(checker, downCheckers, out _, countRowsGrid))
-                result.Add(Position.ToIndex(pos));
 
             return result;
         }
@@ -215,9 +205,6 @@ namespace CheckersCore.Core.Move
                     int yPos = selectedCheckerPosition.Y + j * dy;
 
                     Position tempPos = new Position(xPos, yPos);
-
-                    // + If 2 checker in a row u, can't go throw 'em
-                    // + If 1 checker on the way to some direction, u can't go though your team checker 
 
                     if (Board.InBound(tempPos))
                         result[direction].Add(tempPos);                    

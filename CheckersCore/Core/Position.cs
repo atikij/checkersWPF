@@ -1,6 +1,4 @@
-﻿using CheckersCore.Core.Player;
-
-namespace CheckersCore.Core
+﻿namespace CheckersCore.Core
 {
     public class Position
     {
@@ -29,6 +27,39 @@ namespace CheckersCore.Core
             int y = index / 8;
 
             return (x, y);
+        }
+
+        public static bool operator ==(Position left, Position right)
+        {
+            if (ReferenceEquals(left, null))
+            {
+                return ReferenceEquals(right, null);
+            }
+
+            if (ReferenceEquals(right, null))
+                return false;
+
+            return left.X == right.X && left.Y == right.Y;
+        }
+
+        public static bool operator !=(Position left, Position right)
+        {
+            return !(left == right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Position other = (Position)obj;
+
+            return X == other.X && Y == other.Y;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Y);
         }
     }
 }
