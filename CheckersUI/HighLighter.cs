@@ -15,9 +15,14 @@ namespace CheckersUI
                 throw new Exception($"checker in position: x:{checker.GetPosition().X}, y:{checker.GetPosition().Y} not playable");
 
             UniformGrid grid = ((MainWindow)Application.Current.MainWindow).HighLightGrid;
+            
+            List<int> avaibleIndexes = Move.GetAvaibleMovesIndex(checker, checker.Color == Color.Black, out var positiosToRed, grid.Rows);
 
-            foreach (int index in Move.GetAvaibleMovesIndex(checker, checker.Color == Color.Black, grid.Rows))
+            foreach (int index in avaibleIndexes)
                 ((Image)((MainWindow)Application.Current.MainWindow).HighLightGrid.Children[index]).Opacity = 0;
+
+            foreach (Position pos in positiosToRed)
+                _hideRedLight(pos);
         }
 
         public static void ShowHighLight(Checker checker)
@@ -27,8 +32,27 @@ namespace CheckersUI
 
             UniformGrid grid = ((MainWindow)Application.Current.MainWindow).HighLightGrid;
 
-            foreach (int index in Move.GetAvaibleMovesIndex(checker, checker.Color == Color.Black, grid.Rows))
-                ((Image)((MainWindow)Application.Current.MainWindow).HighLightGrid.Children[index]).Opacity = 0.7;
+            List<int> avaibleIndexes = Move.GetAvaibleMovesIndex(checker, checker.Color == Color.Black, out var positiosToRed, grid.Rows);
+
+            foreach (int index in avaibleIndexes)
+                ((Image)((MainWindow)Application.Current.MainWindow).HighLightGrid.Children[index]).Opacity = 0.5;
+            
+            foreach (Position pos in positiosToRed)
+                _showRedLight(pos);
+        }
+
+        private static void _showRedLight(Position position)
+        {
+            int index = Position.ToIndex(position);
+
+            ((Image)((MainWindow)Application.Current.MainWindow).RedLightGrid.Children[index]).Opacity = 0.3;
+        }
+
+        private static void _hideRedLight(Position position)
+        {
+            int index = Position.ToIndex(position);
+
+            ((Image)((MainWindow)Application.Current.MainWindow).RedLightGrid.Children[index]).Opacity = 0;
         }
     }
 }

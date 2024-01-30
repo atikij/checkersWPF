@@ -35,6 +35,7 @@ namespace CheckersCore.Core
         {
             return pos.X <= 7 && pos.Y <= 7 && pos.X >= 0 && pos.Y >= 0;
         }
+
         public static bool IsEmpty(Position pos)
         {
             return Board.Instance[pos.X, pos.Y] != null && Board.Instance[pos.X, pos.Y].Color == Color.None;
@@ -43,6 +44,27 @@ namespace CheckersCore.Core
         public static void ResetBoard()
         {
             Instance = new Board();
+        }
+
+        public List<Checker> GetCheckersByColor(Color color)
+        {
+            List<Checker> result = new List<Checker>();
+
+            for (int y = 0; y < 8; y++)
+            {
+                for (int x = 0; x < 8; x++)
+                {
+                    if (Board.IsEmpty(new Position(x, y)))
+                        continue;
+
+                    Checker checker = Board.Instance[x, y];
+
+                    if (checker.Color == color)
+                        result.Add(checker);
+                }
+            }
+
+            return result;
         }
 
         private void _initializeBoard()

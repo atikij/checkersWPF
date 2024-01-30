@@ -14,6 +14,7 @@
     <None Remove="Assets\Board.png" />
     <None Remove="Assets\DevBoard.png" />
     <None Remove="Assets\HighLightGreen.png" />
+    <None Remove="Assets\HighLightRed.png" />
     <None Remove="Assets\RedChecker.png" />
     <None Remove="Assets\WhiteChecker.png" />
     <None Remove="Assets\WhiteCheckerQueen.png" />
@@ -29,6 +30,7 @@
     <Resource Include="Assets\Board.png" />
     <Resource Include="Assets\DevBoard.png" />
     <Resource Include="Assets\HighLightGreen.png" />
+    <Resource Include="Assets\HighLightRed.png" />
     <Resource Include="Assets\WhiteChecker.png" />
     <Resource Include="Assets\WhiteCheckerQueen.png" />
   </ItemGroup>

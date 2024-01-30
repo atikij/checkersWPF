@@ -22,6 +22,8 @@ namespace CheckersUI
         public MainWindow()
         {
             InitializeComponent();
+            
+            Application.Current.MainWindow = this;
 
             GameState.StartGame();
         }
@@ -29,6 +31,7 @@ namespace CheckersUI
         public void ResetGame()
         {
             HighLightGrid.Children.Clear();
+            RedLightGrid.Children.Clear();
             BoardGrid.Children.Clear();
             Positions.Clear();
 
@@ -60,8 +63,14 @@ namespace CheckersUI
             {
                 for (int x = 0; x < 8; x++)
                 {
-                    Image greenImage = new Image()
-                    {
+                    Image redImage = new Image() {
+                        Source = new BitmapImage(new Uri("Assets/HighLightRed.png", UriKind.Relative)),
+                        Opacity = 0
+                    };
+
+                    RedLightGrid.Children.Add(redImage);
+
+                    Image greenImage = new Image() {
                         Source = new BitmapImage(new Uri("Assets/HighLightGreen.png", UriKind.Relative)),
                         Opacity = 0
                     };
@@ -136,8 +145,15 @@ namespace CheckersUI
             if (switchTurn || brokenChecker == null)
                 GameState.SwitchTurn();
 
-            if (GameState.GameIsEnded(out _))
-                GameState.StartGame();
+            if (GameState.GameIsEnded(out _, out string reason))
+            {
+                MessageBox.Show(reason, "Game is ended", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                new MenuWindow().Show();
+                this.Close();
+
+                return;
+            }
 
             _selectChecker(null);
         }

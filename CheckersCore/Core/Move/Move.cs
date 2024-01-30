@@ -1,4 +1,5 @@
 ﻿using CheckersCore.Core.Player;
+using System.Collections.Generic;
 
 namespace CheckersCore.Core.Move
 {
@@ -34,7 +35,7 @@ namespace CheckersCore.Core.Move
 
         public static bool CanMoveChecker(Checker checker, Position toPosition, out Checker brokenChecker)
         {
-            List<Position> avaibleMoves = Move._getAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
+            List<Position> avaibleMoves = Move.GetAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
 
             brokenChecker = checkersToBreak.Find(x => x.Item1 == toPosition).Item2;
 
@@ -45,7 +46,7 @@ namespace CheckersCore.Core.Move
         {
             checker?.SetPosition(toPosition);
 
-            Move._getAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
+            Move.GetAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
 
             switchTurn = checkersToBreak.Count == 0;
 
@@ -53,17 +54,28 @@ namespace CheckersCore.Core.Move
                 checker.SetToQueen();
         }
 
-        public static List<int> GetAvaibleMovesIndex(Checker checker, bool downCheckers, int countRowsGrid = 8)
+        public static List<int> GetAvaibleMovesIndex(Checker checker, bool downCheckers, out List<Position> positionsBrokenChecker, int countRowsGrid = 8)
         {
+            positionsBrokenChecker = new List<Position>();
+            
             List<int> result = new List<int>();
 
-            foreach (Position pos in _getAvaibleMovesPositions(checker, downCheckers, out _, countRowsGrid))
+            List<Position> avaibleMoves = GetAvaibleMovesPositions(checker, downCheckers, out var checkersToBreak, countRowsGrid);
+
+            foreach (Position pos in avaibleMoves)
                 result.Add(Position.ToIndex(pos));
+            
+            foreach (var checkerBreak in checkersToBreak)
+            {
+                Position pos = checkerBreak.Item2.GetPosition();
+
+                positionsBrokenChecker.Add(pos);
+            }
 
             return result;
         }
 
-        private static List<Position> _getAvaibleMovesPositions(Checker selectedChecker, bool downCheckers, out List<(Position, Checker)> checkersToBreak, int countRowsGrid = 8)
+        public static List<Position> GetAvaibleMovesPositions(Checker selectedChecker, bool downCheckers, out List<(Position, Checker)> checkersToBreak, int countRowsGrid = 8)
         {
             List<Position> result = new List<Position>();
 
@@ -73,47 +85,7 @@ namespace CheckersCore.Core.Move
 
             if (selectedChecker.IsQueen)
             {
-                Dictionary<Directional, List<Position>> movesQueen = _getAllQueenMoves(selectedChecker, countRowsGrid);
-
-                foreach (var positions in movesQueen.Values)
-                {
-                    for (int i = 0; i < positions.Count; i++)
-                    {
-                        Position pos = positions[i];
-
-                        // Проверка если на пути есть своя шашка, то следующие ходы скипаются
-                        if (!Board.IsEmpty(pos))
-                        {
-                            Checker checkerInPos = Board.Instance[pos.X, pos.Y];
-
-                            if (selectedChecker.Color == checkerInPos.Color) 
-                                break;
-
-                            // Будем делать проверку на то, есть ли после шашки на позиции (pos) свободная клетка 
-                            // Если все хорошо, мы делам проверку на тоже самое
-                            if (i + 1 < positions.Count)
-                            {
-                                Position nextPos = positions[i + 1];
-
-                                // Если на пути есть другая шашка после первой, то мы скипает следующие позиции
-                                if (Board.InBound(nextPos) && !Board.IsEmpty(nextPos))
-                                    break;
-
-                                for (int j = i + 1; j < positions.Count; j++)
-                                {
-                                    nextPos = positions[j];
-
-                                    if (Board.InBound(nextPos) && Board.IsEmpty(nextPos))
-                                        checkersToBreak.Add((nextPos, checkerInPos));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            result.Add(pos);
-                        }
-                    }
-                }
+                result = _getAvaibleMovesQueen(selectedChecker, out checkersToBreak, countRowsGrid);
 
                 return result;
             }
@@ -125,7 +97,7 @@ namespace CheckersCore.Core.Move
             {
                 result.Add(firstMove);
             }
-            else // Detect checker
+            else
             {
                 if (!Board.IsEmpty(firstMove))
                 {
@@ -149,7 +121,7 @@ namespace CheckersCore.Core.Move
             {
                 result.Add(secondMove);
             }
-            else // Detect checker
+            else
             {
                 if (!Board.IsEmpty(secondMove))
                 {
@@ -165,6 +137,94 @@ namespace CheckersCore.Core.Move
 
                             result.Add(moveAfterChecker);
                         }
+                    }
+                }
+            }
+
+            Position thirdMove = downCheckers ? new Position(selectedCheckerPosition.X - 1, selectedCheckerPosition.Y + 1) : new Position(selectedCheckerPosition.X - 1, selectedCheckerPosition.Y - 1);
+            Position fourMove = downCheckers ? new Position(selectedCheckerPosition.X + 1, selectedCheckerPosition.Y + 1)  : new Position(selectedCheckerPosition.X + 1, selectedCheckerPosition.Y - 1);
+
+            if (Board.InBound(thirdMove) && !Board.IsEmpty(thirdMove))
+            {
+                Checker checkerInPos = Board.Instance[thirdMove.X, thirdMove.Y];
+
+                if (checkerInPos != null && checkerInPos.Color != selectedChecker.Color)
+                {
+                    Position moveAfterChecker = downCheckers ? new Position(thirdMove.X - 1, thirdMove.Y + 1) : new Position(thirdMove.X - 1, thirdMove.Y - 1);
+
+                    if (Board.IsEmpty(moveAfterChecker))
+                    {
+                        checkersToBreak.Add((moveAfterChecker, checkerInPos));
+
+                        result.Add(moveAfterChecker);
+                    }
+                }
+            }
+
+            if (Board.InBound(fourMove) && !Board.IsEmpty(fourMove))
+            {
+                Checker checkerInPos = Board.Instance[fourMove.X, fourMove.Y];
+
+                if (checkerInPos != null && checkerInPos.Color != selectedChecker.Color)
+                {
+                    Position moveAfterChecker = downCheckers ? new Position(fourMove.X + 1, fourMove.Y + 1) : new Position(fourMove.X + 1, fourMove.Y - 1);
+
+                    if (Board.IsEmpty(moveAfterChecker))
+                    {
+                        checkersToBreak.Add((moveAfterChecker, checkerInPos));
+
+                        result.Add(moveAfterChecker);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static List<Position> _getAvaibleMovesQueen(Checker selectedChecker, out List<(Position, Checker)> checkersToBreak, int countRowsGrid = 8)
+        {
+            List<Position> result = new List<Position>();
+
+            checkersToBreak = new List<(Position, Checker)>();
+
+            Dictionary<Directional, List<Position>> movesQueen = _getAllQueenMoves(selectedChecker, countRowsGrid);
+
+            foreach (var positions in movesQueen.Values)
+            {
+                for (int i = 0; i < positions.Count; i++)
+                {
+                    Position pos = positions[i];
+
+                    // Проверка если на пути есть своя шашка, то следующие ходы скипаются
+                    if (!Board.IsEmpty(pos))
+                    {
+                        Checker checkerInPos = Board.Instance[pos.X, pos.Y];
+
+                        if (selectedChecker.Color == checkerInPos.Color)
+                            break;
+
+                        // Будем делать проверку на то, есть ли после шашки на позиции (pos) свободная клетка 
+                        // Если все хорошо, мы делам проверку на тоже самое
+                        if (i + 1 < positions.Count)
+                        {
+                            Position nextPos = positions[i + 1];
+
+                            // Если на пути есть другая шашка после первой, то мы скипает следующие позиции
+                            if (Board.InBound(nextPos) && !Board.IsEmpty(nextPos))
+                                break;
+
+                            for (int j = i + 1; j < positions.Count; j++)
+                            {
+                                nextPos = positions[j];
+
+                                if (Board.InBound(nextPos) && Board.IsEmpty(nextPos))
+                                    checkersToBreak.Add((nextPos, checkerInPos));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        result.Add(pos);
                     }
                 }
             }

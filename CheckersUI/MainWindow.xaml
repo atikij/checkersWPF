@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersUI"
         mc:Ignorable="d"
-        Title="Game" SizeToContent="Height" Width="1000" Background="#FF32363C"
+        Title="Game" SizeToContent="Width" Width="1000" Background="#FF32363C"
         WindowStartupLocation="CenterScreen">
     <Viewbox>
         <Grid>
@@ -13,13 +13,15 @@
                 <ImageBrush ImageSource="Assets/Board.png"/>
             </Grid.Background>
 
+            <UniformGrid x:Name="RedLightGrid" Rows="8" Columns="8" 
+                         Height="1000" Width="1000"/>
+
             <UniformGrid x:Name="BoardGrid" Rows="8" Columns="8" 
-                         Height="1000" Width="1000" RenderOptions.BitmapScalingMode="HighQuality">
-            </UniformGrid>
+                         Height="1000" Width="1000" 
+                         RenderOptions.BitmapScalingMode="HighQuality"/>
 
             <UniformGrid x:Name="HighLightGrid" Rows="8" Columns="8" 
-                         Height="1000" Width="1000">
-            </UniformGrid>
+                         Height="1000" Width="1000"/>
         </Grid>
     </Viewbox>
 </Window>
