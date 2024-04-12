@@ -25,3 +25,34 @@ D:\CodeProjects\CSharp\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.c
 D:\CodeProjects\CSharp\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.sourcelink.json
 D:\CodeProjects\CSharp\Checkers\CheckersUI\obj\Debug\net8.0-windows\MenuWindow.g.cs
 D:\CodeProjects\CSharp\Checkers\CheckersUI\obj\Debug\net8.0-windows\MenuWindow.baml
+D:\rider repos\Checkers\CheckersUI\bin\Debug\net8.0-windows\CheckersUI.exe
+D:\rider repos\Checkers\CheckersUI\bin\Debug\net8.0-windows\CheckersUI.deps.json
+D:\rider repos\Checkers\CheckersUI\bin\Debug\net8.0-windows\CheckersUI.runtimeconfig.json
+D:\rider repos\Checkers\CheckersUI\bin\Debug\net8.0-windows\CheckersUI.dll
+D:\rider repos\Checkers\CheckersUI\bin\Debug\net8.0-windows\CheckersUI.pdb
+D:\rider repos\Checkers\CheckersUI\bin\Debug\net8.0-windows\CheckersCore.dll
+D:\rider repos\Checkers\CheckersUI\bin\Debug\net8.0-windows\CheckersCore.pdb
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.csproj.AssemblyReference.cache
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\MainWindow.g.cs
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\MenuWindow.g.cs
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\App.g.cs
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI_MarkupCompile.cache
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI_MarkupCompile.lref
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\MainWindow.baml
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\MenuWindow.baml
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.g.resources
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.GeneratedMSBuildEditorConfig.editorconfig
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.AssemblyInfoInputs.cache
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.AssemblyInfo.cs
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.csproj.CoreCompileInputs.cache
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.sourcelink.json
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.csproj.CopyComplete
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.dll
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\refint\CheckersUI.dll
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.pdb
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\CheckersUI.genruntimeconfig.cache
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\ref\CheckersUI.dll
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\AuthWindow.g.cs
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\AuthWindow.baml
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\RegWindow.g.cs
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\RegWindow.baml

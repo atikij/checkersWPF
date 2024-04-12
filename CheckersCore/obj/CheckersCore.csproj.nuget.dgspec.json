@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\CodeProjects\\CSharp\\Checkers\\CheckersCore\\CheckersCore.csproj": {}
+    "D:\\rider repos\\Checkers\\CheckersCore\\CheckersCore.csproj": {}
   },
   "projects": {
-    "D:\\CodeProjects\\CSharp\\Checkers\\CheckersCore\\CheckersCore.csproj": {
+    "D:\\rider repos\\Checkers\\CheckersCore\\CheckersCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\CodeProjects\\CSharp\\Checkers\\CheckersCore\\CheckersCore.csproj",
+        "projectUniqueName": "D:\\rider repos\\Checkers\\CheckersCore\\CheckersCore.csproj",
         "projectName": "CheckersCore",
-        "projectPath": "D:\\CodeProjects\\CSharp\\Checkers\\CheckersCore\\CheckersCore.csproj",
-        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "D:\\CodeProjects\\CSharp\\Checkers\\CheckersCore\\obj\\",
+        "projectPath": "D:\\rider repos\\Checkers\\CheckersCore\\CheckersCore.csproj",
+        "packagesPath": "C:\\Users\\пк\\.nuget\\packages\\",
+        "outputPath": "D:\\rider repos\\Checkers\\CheckersCore\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\пк\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -60,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

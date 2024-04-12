@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+6/BUGTSYWxOVypwDcPwW479fQXQB5mo+UlR7g6Ejm79YsQFLlk3TDjNLokoMVHK1K2xqC7VnCXojlf+grrbVA==",
+  "dgSpecHash": "P3Rj2J3E/3EZZ2XvYd/+b7whH5rTUo3+L/nfqIYgNSCRrIjdne+ckIBewaL7r37OU9ugWLsebTSnegsrMO/TuQ==",
   "success": true,
-  "projectFilePath": "D:\\CodeProjects\\CSharp\\Checkers\\CheckersUI\\CheckersUI.csproj",
+  "projectFilePath": "D:\\rider repos\\Checkers\\CheckersUI\\CheckersUI.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

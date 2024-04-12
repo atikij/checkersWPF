@@ -8,15 +8,31 @@
         Title="MenuWindow"
         Height="414" Width="884" Background="#FF232537">
     <Canvas>
-        <TextBlock DockPanel.Dock="Left" Text="Start Game" FontSize="30" Foreground="White" 
+        <TextBlock DockPanel.Dock="Left" Text="Шашки" FontSize="30" Foreground="White" 
                    FontFamily="Dubai Medium" Height="55" Width="142" 
                    Canvas.Left="379" Canvas.Top="27"
                    HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-        <Button DockPanel.Dock="Left" Content="Start" Height="90" 
+        <Button DockPanel.Dock="Left" Content="Играть" Height="90" 
                 Canvas.Left="272" Canvas.Top="84" Width="356" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
                 FontFamily="Dubai" FontSize="40" Background="#FF8DAAB3"
                 Click="StartGame"/>
+
+        <Button DockPanel.Dock="Left" Content="Статистика" Height="90" 
+                Canvas.Left="272" Canvas.Top="200" Width="356" 
+                HorizontalAlignment="Center" VerticalAlignment="Top" 
+                FontFamily="Dubai" FontSize="40" Background="#FF8DAAB3"
+                />
+
+        <TextBlock DockPanel.Dock="Left" Text="Вы:" FontSize="20" Foreground="White" 
+                   FontFamily="Dubai Medium" Height="25" Width="auto" 
+                   Canvas.Left="10" Canvas.Top="10"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+        <TextBlock x:Name="LoggedInUserTextBlock" FontSize="20" Foreground="White" 
+                   FontFamily="Dubai Medium" Height="25" Width="200" 
+                   Canvas.Left="50" Canvas.Top="10"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Canvas>
 </Window>

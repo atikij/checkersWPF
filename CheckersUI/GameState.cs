@@ -46,7 +46,7 @@ namespace CheckersUI
             // Check if one player has taken all checkers of the other player
             if (_takenBlackCheckers.Count >= CountCheckers || _takenWhiteCheckers.Count >= CountCheckers)
             {
-                winnerColor = _takenBlackCheckers.Count >= CountCheckers ? Color.White : Color.Black;
+                winnerColor = _takenBlackCheckers.Count >= CountCheckers ? Color.Black : Color.White;
                 reason = $"{winnerColor} won, all enemies were destroyed";
 
                 return true;

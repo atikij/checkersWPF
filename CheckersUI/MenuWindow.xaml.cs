@@ -7,15 +7,21 @@ namespace CheckersUI
     /// </summary>
     public partial class MenuWindow : Window
     {
-        public MenuWindow()
+        private string _username;
+        private string _password;
+
+        public MenuWindow(string username, string password)
         {
             InitializeComponent();
+            _username = username;
+            _password = password;
+            // Здесь вы можете использовать loggedInUser для отображения имени в UI
+            LoggedInUserTextBlock.Text = _username;
         }
 
         private void StartGame(object s, RoutedEventArgs e)
         {
-            new MainWindow().Show();
-
+            new MainWindow(_username,_password).Show();
             this.Close();
         }
     }

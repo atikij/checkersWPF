@@ -7,21 +7,37 @@
         mc:Ignorable="d"
         Title="Game" SizeToContent="Width" Width="1000" Background="#FF32363C"
         WindowStartupLocation="CenterScreen">
-    <Viewbox>
-        <Grid>
-            <Grid.Background>
-                <ImageBrush ImageSource="Assets/Board.png"/>
-            </Grid.Background>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Viewbox Grid.Column="0">
+            <Grid>
+                <Grid.Background>
+                    <ImageBrush ImageSource="Assets/Board.png"/>
+                </Grid.Background>
+                <UniformGrid x:Name="RedLightGrid" Rows="8" Columns="8" 
+                             Height="500" Width="500"/>
 
-            <UniformGrid x:Name="RedLightGrid" Rows="8" Columns="8" 
-                         Height="1000" Width="1000"/>
+                <UniformGrid x:Name="BoardGrid" Rows="8" Columns="8" 
+                             Height="500" Width="500" 
+                             RenderOptions.BitmapScalingMode="HighQuality"/>
 
-            <UniformGrid x:Name="BoardGrid" Rows="8" Columns="8" 
-                         Height="1000" Width="1000" 
-                         RenderOptions.BitmapScalingMode="HighQuality"/>
-
-            <UniformGrid x:Name="HighLightGrid" Rows="8" Columns="8" 
-                         Height="1000" Width="1000"/>
+                <UniformGrid x:Name="HighLightGrid" Rows="8" Columns="8" 
+                             Height="500" Width="500"/>
+            </Grid>
+        </Viewbox>
+        <Grid Grid.Column="1" Width="500">
+            <!-- Добавление таймера для белого игрока -->
+            <TextBlock x:Name="WhitePlayerTimerTextBlock" Text="00:00" VerticalAlignment="Top" HorizontalAlignment="Center" 
+                       Foreground="White" FontSize="20" FontWeight="Bold" Margin="0,20,0,0"/>
+            <!-- Добавление таймера для черного игрока -->
+            <TextBlock x:Name="BlackPlayerTimerTextBlock" Text="00:00" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+                       Foreground="White" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+            <!-- Добавление отображения текущего игрока -->
+            <TextBlock x:Name="CurrentPlayerTextBlock" Text="Ходит: " VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Foreground="White" FontSize="20" FontWeight="Bold" Margin="0"/>
         </Grid>
-    </Viewbox>
+    </Grid>
 </Window>
