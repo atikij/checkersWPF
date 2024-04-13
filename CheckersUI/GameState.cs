@@ -46,8 +46,8 @@ namespace CheckersUI
             // Check if one player has taken all checkers of the other player
             if (_takenBlackCheckers.Count >= CountCheckers || _takenWhiteCheckers.Count >= CountCheckers)
             {
-                winnerColor = _takenBlackCheckers.Count >= CountCheckers ? Color.Black : Color.White;
-                reason = $"{winnerColor} won, all enemies were destroyed";
+                winnerColor = _takenBlackCheckers.Count >= CountCheckers ? Color.White : Color.Black;
+                reason = $"{winnerColor} победили.";
 
                 return true;
             }
@@ -67,7 +67,7 @@ namespace CheckersUI
                         return false;
                 }
 
-                reason = "Moves are over";
+                reason = "Ходы кончились.";
                 return true;
             }
 

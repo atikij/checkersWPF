@@ -19,21 +19,24 @@ namespace CheckersUI
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Please enter both username and password.");
+                MessageBox.Show("Пожалуйста напишите имя или пароль.");
                 return;
             }
 
             // Проверка, существует ли уже пользователь с таким именем
             if (UserExists(username))
             {
-                MessageBox.Show("User with this username already exists. Please choose another username.");
+                MessageBox.Show("Пользователь с таким именем уже есть!\nПожалуста выберите другое.");
                 return;
             }
+
+            // Форматирование строки для записи в файл
+            string userData = $"{username},{password}";
 
             // Добавление нового пользователя в файл
             using (StreamWriter writer = File.AppendText(UsersFileName))
             {
-                writer.WriteLine($"\n{username},{password}");
+                writer.WriteLine(userData); // Запись данных о пользователе в новой строке
                 new AuthWindow().Show();
                 this.Close();
             }
@@ -41,6 +44,7 @@ namespace CheckersUI
             MessageBox.Show("Регистрация успешна, теперь вы можете войти!");
             ClearFields();
         }
+
 
         private bool UserExists(string username)
         {

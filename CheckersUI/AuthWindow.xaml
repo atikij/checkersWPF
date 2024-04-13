@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersUI"
         mc:Ignorable="d"
-        Title="Login" Height="300" Width="400">
+        Title="Login" Height="300" Width="400" Background="#FF232537">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,15 +15,17 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <TextBlock Grid.Row="0" Text="Логин" HorizontalAlignment="Center" Margin="0,20,0,5"/>
+        <TextBlock Grid.Row="0" Text="Логин" HorizontalAlignment="Center" Margin="0,20,0,5" Foreground="white" FontFamily="Dubai"/>
         <TextBox x:Name="UsernameTextBox" Grid.Row="1" HorizontalAlignment="Center" Width="200" Margin="0,5"/>
         
-        <TextBlock Grid.Row="2" Text="Пароль" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+        <TextBlock Grid.Row="2" Text="Пароль" HorizontalAlignment="Center" Margin="0,10,0,5" Foreground="white" FontFamily="Dubai"/>
         <PasswordBox x:Name="PasswordBox" Grid.Row="3" HorizontalAlignment="Center" Width="200" Margin="0,5"/>
         
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Войти" Width="100" Margin="0,20" Click="LoginButton_Click"/>
-            <TextBlock Margin="10,20">
+            <Button Content="Войти" Width="100" Margin="0,20"
+                    Background="#FF8DAAB3" FontFamily="Dubai"
+                    Click="LoginButton_Click"/>
+            <TextBlock Margin="10,20" Foreground="White" FontFamily="Dubai">
                 <Hyperlink Click="RegisterButton_Click">
                     Регистрация
                 </Hyperlink>

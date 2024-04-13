@@ -56,3 +56,5 @@ D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\AuthWindow.g.cs
 D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\AuthWindow.baml
 D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\RegWindow.g.cs
 D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\RegWindow.baml
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\StatWindow.g.cs
+D:\rider repos\Checkers\CheckersUI\obj\Debug\net8.0-windows\StatWindow.baml

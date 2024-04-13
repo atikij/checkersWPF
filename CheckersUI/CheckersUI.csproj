@@ -28,7 +28,6 @@
     <Resource Include="Assets\BlackChecker.png" />
     <Resource Include="Assets\BlackCheckerQueen.png" />
     <Resource Include="Assets\Board.png" />
-    <Resource Include="Assets\DevBoard.png" />
     <Resource Include="Assets\HighLightGreen.png" />
     <Resource Include="Assets\HighLightRed.png" />
     <Resource Include="Assets\WhiteChecker.png" />

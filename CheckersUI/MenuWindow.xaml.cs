@@ -24,5 +24,11 @@ namespace CheckersUI
             new MainWindow(_username,_password).Show();
             this.Close();
         }
+
+        private void Stats(object sender, RoutedEventArgs e)
+        {
+            new StatWindow(_username,_password).Show();
+            this.Close();
+        }
     }
 }

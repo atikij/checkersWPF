@@ -54,7 +54,6 @@ namespace CheckersUI
             CurrentPlayerTextBlock.Text = $"Ходит: Белый";
         }
         
-        
         private void _WhitePlayerTimer_Tick(object sender, EventArgs e)
         {
             // Обновление времени для белого игрока
@@ -304,6 +303,12 @@ namespace CheckersUI
                 return checker.Color == ColorChecker.White ? new BitmapImage(new Uri("Assets/WhiteCheckerQueen.png", UriKind.Relative)) : new BitmapImage(new Uri("Assets/BlackCheckerQueen.png", UriKind.Relative));
 
             return checker.Color == ColorChecker.White ? new BitmapImage(new Uri("Assets/WhiteChecker.png", UriKind.Relative)) : new BitmapImage(new Uri("Assets/BlackChecker.png", UriKind.Relative));
+        }
+        
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            new MenuWindow(_username,_password).Show();
+            this.Close();
         }
     }
 }

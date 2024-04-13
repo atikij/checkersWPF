@@ -23,6 +23,7 @@
                 Canvas.Left="272" Canvas.Top="200" Width="356" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
                 FontFamily="Dubai" FontSize="40" Background="#FF8DAAB3"
+                Click="Stats"
                 />
 
         <TextBlock DockPanel.Dock="Left" Text="Вы:" FontSize="20" Foreground="White" 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersUI"
         mc:Ignorable="d"
-        Title="Registration" Height="300" Width="400">
+        Title="Registration" Height="300" Width="400" Background="#FF232537">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -16,14 +16,15 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <TextBlock Grid.Row="0" Text="Регистрация" HorizontalAlignment="Center" Margin="0,20,0,10" FontSize="20"/>
+        <TextBlock Grid.Row="0" Text="Регистрация" HorizontalAlignment="Center" Margin="0,20,0,10" FontSize="20" Foreground="white" FontFamily="Dubai"/>
         
-        <TextBlock Grid.Row="1" Text="Логин" HorizontalAlignment="Center" Margin="0,20,0,5"/>
+        <TextBlock Grid.Row="1" Text="Логин" HorizontalAlignment="Center" Margin="0,20,0,5" Foreground="white" FontFamily="Dubai"/>
         <TextBox x:Name="UsernameTextBox" Grid.Row="2" HorizontalAlignment="Center" Width="200" Margin="0,5"/>
         
-        <TextBlock Grid.Row="3" Text="Пароль" HorizontalAlignment="Center" Margin="0,10,0,5"/>
+        <TextBlock Grid.Row="3" Text="Пароль" HorizontalAlignment="Center" Margin="0,10,0,5" Foreground="white" FontFamily="Dubai"/>
         <PasswordBox x:Name="PasswordBox" Grid.Row="4" HorizontalAlignment="Center" Width="200" Margin="0,5"/>
         
-        <Button Grid.Row="5" Content="Зарегестрироваться" HorizontalAlignment="Center" Margin="0,20" Click="RegisterButton_Click"/>
+        <Button Grid.Row="5" Content="Зарегестрироваться" HorizontalAlignment="Center" Margin="0,20" Width="150"
+                Foreground="Black" FontFamily="Dubai" Background="#FF8DAAB3" Click="RegisterButton_Click"/>
     </Grid>
 </Window>
