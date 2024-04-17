@@ -35,12 +35,15 @@ namespace CheckersCore.Core.Move
 
         public static bool CanMoveChecker(Checker checker, Position toPosition, out Checker brokenChecker)
         {
+            Position fromPosition = checker.GetPosition();
+
             List<Position> avaibleMoves = Move.GetAvaibleMovesPositions(checker, checker.Color == Color.Black, out List<(Position, Checker)> checkersToBreak);
 
             brokenChecker = checkersToBreak.Find(x => x.Item1 == toPosition).Item2;
 
-            return avaibleMoves.Contains(toPosition);
+            return avaibleMoves.Contains(toPosition) && fromPosition != toPosition;
         }
+
 
         public static void MoveChecker(Checker checker, Position toPosition, out bool switchTurn)
         {

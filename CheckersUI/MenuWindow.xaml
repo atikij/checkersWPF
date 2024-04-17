@@ -6,25 +6,33 @@
         xmlns:local="clr-namespace:CheckersUI"
         mc:Ignorable="d"
         Title="MenuWindow"
-        Height="414" Width="884" Background="#FF232537">
+        Height="500" Width="884" Background="#FF232537"
+        WindowStartupLocation="CenterScreen">
     <Canvas>
         <TextBlock DockPanel.Dock="Left" Text="Шашки" FontSize="30" Foreground="White" 
-                   FontFamily="Dubai Medium" Height="55" Width="142" 
+                   FontFamily="Dubai Medium" Height="55" Width="auto" 
                    Canvas.Left="379" Canvas.Top="27"
                    HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
-        <Button DockPanel.Dock="Left" Content="Играть" Height="90" 
-                Canvas.Left="272" Canvas.Top="84" Width="356" 
+        <Button DockPanel.Dock="Left" Content="Играть вдвоем" Height="90" 
+                Canvas.Left="272" Canvas.Top="100" Width="370" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
                 FontFamily="Dubai" FontSize="40" Background="#FF8DAAB3"
                 Click="StartGame"/>
 
         <Button DockPanel.Dock="Left" Content="Статистика" Height="90" 
-                Canvas.Left="272" Canvas.Top="200" Width="356" 
+                Canvas.Left="272" Canvas.Top="300" Width="370" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
                 FontFamily="Dubai" FontSize="40" Background="#FF8DAAB3"
                 Click="Stats"
                 />
+        
+        <Button DockPanel.Dock="Left" Content="Играть против бота" Height="90" 
+                Canvas.Left="272" Canvas.Top="200" Width="370" 
+                HorizontalAlignment="Center" VerticalAlignment="Top" 
+                FontFamily="Dubai" FontSize="40" Background="#FF8DAAB3"
+                Click="Bot"
+        />
 
         <TextBlock DockPanel.Dock="Left" Text="Вы:" FontSize="20" Foreground="White" 
                    FontFamily="Dubai Medium" Height="25" Width="auto" 

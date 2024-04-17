@@ -175,10 +175,10 @@ namespace CheckersUI
             _selectChecker(checker);
         }
         
-        private void SaveWhitePlayerTime(string username, string password)
+        private void SaveWhitePlayerTime(string username, string password, bool isVictory)
         {
             string filePath = "D:\\rider repos\\checkers\\CheckersUI\\Assets\\users1.txt";
-            string dataToWrite = $"{username},{password},{_whitePlayerTimeElapsed.ToString(@"hh\:mm\:ss")}";
+            string dataToWrite = $"{username},{password},{_whitePlayerTimeElapsed.ToString(@"hh\:mm\:ss")},{(isVictory ? "1,0" : "0,1")}"; // Если победа - увеличиваем количество побед, иначе увеличиваем количество поражений
 
             if (File.Exists(filePath))
             {
@@ -190,17 +190,15 @@ namespace CheckersUI
                 for (int i = 0; i < existingData.Length; i++)
                 {
                     string[] parts = existingData[i].Split(',');
-                    if (parts.Length == 3 && parts[0] == username && parts[1] == password)
+                    if (parts.Length >= 5 && parts[0] == username && parts[1] == password)
                     {
-                        // Найден пользователь, сравниваем время
-                        TimeSpan existingTime = TimeSpan.Parse(parts[2]);
-                        TimeSpan newTime = _whitePlayerTimeElapsed;
+                        // Найден пользователь, обновляем данные
+                        int victories = int.Parse(parts[3]) + (isVictory ? 1 : 0); // Увеличиваем количество побед
+                        int losses = int.Parse(parts[4]) + (isVictory ? 0 : 1); // Увеличиваем количество поражений
 
-                        // Если новое время меньше текущего, обновляем запись
-                        if (newTime < existingTime)
-                        {
-                            existingData[i] = dataToWrite; // Обновляем запись с новым временем
-                        }
+                        // Обновляем запись с новыми данными
+                        existingData[i] = $"{username},{password},{_whitePlayerTimeElapsed.ToString(@"hh\:mm\:ss")},{victories},{losses}";
+
                         userFound = true;
                         break;
                     }
@@ -223,7 +221,6 @@ namespace CheckersUI
                 File.WriteAllText(filePath, dataToWrite);
             }
         }
-
         
         private void _onMouseLeftClick_Move(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -258,8 +255,11 @@ namespace CheckersUI
             {
                 if (winner == ColorChecker.White)
                 {
-                    // Сохраняем время таймера белого игрока под его логином
-                    SaveWhitePlayerTime(_username, _password);
+                    SaveWhitePlayerTime(_username, _password, true);
+                }
+                else
+                {
+                    SaveWhitePlayerTime(_username, _password, false);
                 }
                 MessageBox.Show(reason, "Game is ended", MessageBoxButton.OK, MessageBoxImage.Information);
                 new MenuWindow(_username,_password).Show();

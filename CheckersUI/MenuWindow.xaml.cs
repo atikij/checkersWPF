@@ -30,5 +30,11 @@ namespace CheckersUI
             new StatWindow(_username,_password).Show();
             this.Close();
         }
+        
+        private void Bot(object sender, RoutedEventArgs e)
+        {
+            new BotWindow(_username,_password).Show();
+            this.Close();
+        }
     }
 }

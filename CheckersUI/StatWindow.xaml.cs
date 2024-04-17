@@ -10,16 +10,28 @@ namespace CheckersUI
     {
         private string _username;
         private string _password;
+
         public StatWindow(string username, string password)
         {
             InitializeComponent();
             _username = username;
             _password = password;
-            // Чтение данных из файла и заполнение списка игроков
+
+            // Чтение данных из файла
             List<PlayerStats> playerStatsList = ReadPlayerStatsFromFile("D:\\rider repos\\checkers\\CheckersUI\\Assets\\users1.txt");
 
-            // Привязка списка игроков к ListView
-            PlayersListView.ItemsSource = playerStatsList;
+            // Привязка списка игроков к ListView в каждой вкладке
+            TimeListView.ItemsSource = playerStatsList
+                .OrderBy(player => TimeSpan.Parse(player.BestTime))
+                .ToList();
+
+            WinListView.ItemsSource = playerStatsList
+                .OrderByDescending(player => player.Victories)
+                .ToList();
+
+            StatListView.ItemsSource = playerStatsList
+                .Where(player => player.Username == _username && player.Password == _password)
+                .ToList();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -27,7 +39,7 @@ namespace CheckersUI
             new MenuWindow(_username,_password).Show();
             this.Close();
         }
-        
+
         private List<PlayerStats> ReadPlayerStatsFromFile(string filePath)
         {
             List<PlayerStats> playerStatsList = new List<PlayerStats>();
@@ -45,28 +57,34 @@ namespace CheckersUI
                     // Проверка наличия времени у игрока
                     string username = parts[0];
                     string password = parts.Length > 1 ? parts[1] : "";
-                    string time = parts.Length > 2 ? parts[2] : "-"; // Если нет времени, используем прочерк
+                    string time = parts.Length > 2 ? parts[2] : "-";
+                    int victories = parts.Length > 3 ? int.Parse(parts[3]) : 0;
+                    int losses = parts.Length > 4 ? int.Parse(parts[4]) : 0;
 
-                    playerStatsList.Add(new PlayerStats(username, password, time));
+                    playerStatsList.Add(new PlayerStats(username, password, time, victories, losses));
                 }
             }
 
             return playerStatsList;
         }
     }
+}
 
-    // Класс для представления статистики игрока
     public class PlayerStats
     {
         public string Username { get; set; }
         public string Password { get; set; }
         public string BestTime { get; set; }
+        public int Victories { get; set; }
+        public int Losses { get; set; }
 
-        public PlayerStats(string username, string password, string bestTime)
+        public PlayerStats(string username, string password, string bestTime, int victories, int losses)
         {
             Username = username;
             Password = password;
             BestTime = bestTime;
+            Victories = victories;
+            Losses = losses;
         }
     }
-}
+

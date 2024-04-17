@@ -5,17 +5,57 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersUI"
         mc:Ignorable="d"
-        Title="StatWindow" Height="450" Width="800" Background="#FF32363C">
-    <Grid>
-        <ListView x:Name="PlayersListView" Margin="10" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Username}" Width="150"/>
-                    <GridViewColumn Header="Лучшее время" DisplayMemberBinding="{Binding BestTime}" Width="150"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Button Content="Назад" Click="BackButton_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Width="50"
-                FontFamily="Dubai" Background="#FF32363C" Foreground="White"/>
-    </Grid>
+        Title="StatWindow" Height="450" Width="800" Background="#FF32363C"
+        WindowStartupLocation="CenterScreen">
+    <TabControl>
+        <!-- Вкладка 1 -->
+        <TabItem Header="Лучшее время">
+            <Grid>
+                <ListView x:Name="TimeListView" Margin="10" >
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Username}" Width="150"/>
+                            <GridViewColumn Header="Лучшее время" DisplayMemberBinding="{Binding BestTime}" Width="150"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button Content="Назад" Click="BackButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Width="50"
+                        FontFamily="Dubai" Background="#FF32363C" Foreground="White"/>
+            </Grid>
+        </TabItem>
+
+        <!-- Вкладка 2 -->
+        <TabItem Header="Статистика">
+            <Grid>
+                <ListView x:Name="StatListView" Margin="10" >
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Побед" DisplayMemberBinding="{Binding Victories}" Width="150"/>
+                            <GridViewColumn Header="Поражений" DisplayMemberBinding="{Binding Losses}" Width="150"/>
+                            <GridViewColumn Header="Лучшее время" DisplayMemberBinding="{Binding BestTime}" Width="150"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button Content="Назад" Click="BackButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Width="50"
+                        FontFamily="Dubai" Background="#FF32363C" Foreground="White"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Победы">
+            <Grid>
+                <ListView x:Name="WinListView" Margin="10" >
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Username}" Width="150"/>
+                            <GridViewColumn Header="Побед" DisplayMemberBinding="{Binding Victories}" Width="150"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button Content="Назад" Click="BackButton_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Width="50"
+                        FontFamily="Dubai" Background="#FF32363C" Foreground="White"/>
+            </Grid>
+        </TabItem>
+
+        <!-- Добавьте больше вкладок, если нужно -->
+    </TabControl>
+
 </Window>

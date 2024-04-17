@@ -1,4 +1,5 @@
 ﻿using CheckersCore.Core.Player;
+using System.Collections.Generic;
 
 namespace CheckersCore.Core
 {
@@ -69,7 +70,7 @@ namespace CheckersCore.Core
 
         private void _initializeBoard()
         {
-            // Fill board by Empty
+            // Заполняем доску пустыми клетками
             for (int y = 0; y < 8; y++)
             {
                 for (int x = 0; x < 8; x++)
@@ -78,7 +79,7 @@ namespace CheckersCore.Core
                 }
             }
             
-            #region White
+            #region Белые шашки
 
             this[1, 0] = new Checker(Color.White);
             this[3, 0] = new Checker(Color.White);
@@ -95,9 +96,9 @@ namespace CheckersCore.Core
             this[5, 2] = new Checker(Color.White);
             this[7, 2] = new Checker(Color.White);
 
-            #endregion White
+            #endregion Белые шашки
 
-            #region Black
+            #region Черные шашки
 
             this[0, 5] = new Checker(Color.Black);
             this[2, 5] = new Checker(Color.Black);
@@ -114,7 +115,7 @@ namespace CheckersCore.Core
             this[4, 7] = new Checker(Color.Black);
             this[6, 7] = new Checker(Color.Black);
 
-            #endregion Black
+            #endregion Черные шашки
         }
     }
 }

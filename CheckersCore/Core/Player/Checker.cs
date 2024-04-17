@@ -19,14 +19,14 @@ namespace CheckersCore.Core.Player
         {
             if (_position != null)
             {
-                // Instend of this checker, insert None
+                // Заменяем эту шашку на пустое поле
                 Board.Instance[_position.X, _position.Y] = new Checker(Color.None);
             }
 
-            // Set new position
+            // Устанавливаем новую позицию
             _position = new Position(position.X, position.Y);
 
-            // Instend of this None, insert checker
+            // Заменяем пустое поле на эту шашку
             Board.Instance[_position.X, _position.Y] = this;
         }
         
@@ -34,23 +34,23 @@ namespace CheckersCore.Core.Player
         {
             if (_position != null)
             {
-                // Instend of this checker, insert None
+                // Заменяем эту шашку на пустое поле
                 Board.Instance[_position.X, _position.Y] = new Checker(Color.None);
             }
 
-            // Set new position
+            // Устанавливаем новую позицию
             _position = new Position(x, y);
 
-            // Instend of this None, insert checker
+            // Заменяем пустое поле на эту шашку
             Board.Instance[_position.X, _position.Y] = this;
         }
 
         public void DeleteFromGame()
         {
-            // Change color to neutral
+            // Изменяем цвет на нейтральный
             this.Color = Color.None;
 
-            // Instend of checker, insert None
+            // Заменяем шашку на пустое поле
             Board.Instance[_position.X, _position.Y] = new Checker(Color.None); ;
         }
 

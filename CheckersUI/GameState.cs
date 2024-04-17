@@ -27,7 +27,16 @@ namespace CheckersUI
             _takenBlackCheckers.Clear();
             _takenWhiteCheckers.Clear();
 
-            ((MainWindow)Application.Current.MainWindow).ResetGame();
+            Window currentWindow = Application.Current.MainWindow;
+            if (currentWindow is MainWindow mainWin)
+            {
+                mainWin.ResetGame();
+            }
+            else if (currentWindow is BotWindow botWin)
+            {
+                botWin.ResetGame();
+            }
+
         }
 
         public void Delete(Checker checker)

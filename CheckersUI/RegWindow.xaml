@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckersUI"
         mc:Ignorable="d"
-        Title="Registration" Height="300" Width="400" Background="#FF232537">
+        Title="Registration" Height="300" Width="400" Background="#FF232537"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
