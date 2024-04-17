@@ -206,7 +206,11 @@ namespace CheckersUI
                 if (winner == ColorChecker.White)
                 {
                     // Сохраняем время таймера белого игрока под его логином
-                    SaveWhitePlayerTime(_username, _password);
+                    SaveWhitePlayerTime(_username, _password,true);
+                }
+                else
+                {
+                    SaveWhitePlayerTime(_username, _password,false);
                 }
                 MessageBox.Show(reason, "Game is ended", MessageBoxButton.OK, MessageBoxImage.Information);
                 new MenuWindow(_username, _password).Show();
@@ -227,81 +231,91 @@ namespace CheckersUI
             MakeMove();
         }
         
-        public async void MakeMove()
+public async void MakeMove()
+{
+    // Проверяем, является ли текущий игрок ботом
+    if (GameState.Turn == ColorChecker.Black)
+    {
+        var checkers = Board.Instance.GetCheckersByColor(GameState.Turn);
+
+        if (checkers != null && checkers.Count > 0)
         {
-            var checkers = Board.Instance.GetCheckersByColor(GameState.Turn);
+            Random random = new Random();
+            Checker randomChecker;
+            Position oldPosition;
 
-            if (checkers != null && checkers.Count > 0)
+            do
             {
-                Random random = new Random();
-                Checker randomChecker;
-                Position oldPosition;
+                randomChecker = checkers[random.Next(checkers.Count)]; // Выбираем случайную шашку
+                oldPosition = randomChecker.GetPosition();
 
-                do
+                // Получаем доступные ходы для выбранной шашки
+                List<int> availableMoves = Move.GetAvaibleMovesIndex(randomChecker, randomChecker.Color == ColorChecker.Black, out _);
+
+                // Проверяем наличие доступных ходов
+                if (availableMoves.Count > 0)
                 {
-                    randomChecker = checkers[random.Next(checkers.Count)]; // Выбираем случайную шашку
-                    oldPosition = randomChecker.GetPosition();
+                    // Если у шашки есть доступные ходы, выбираем случайный ход и делаем его
+                    int randomMoveIndex = availableMoves[random.Next(availableMoves.Count)]; // Выбираем случайный ход
+                    (int x, int y) = Position.FromIndex(randomMoveIndex);
+                    Position selectedPosition = new Position(x, y);
+                    Move.CanMoveChecker(randomChecker, selectedPosition, out Checker brokenChecker);
 
-                    // Получаем доступные ходы для выбранной шашки
-                    List<int> availableMoves = Move.GetAvaibleMovesIndex(randomChecker, randomChecker.Color == ColorChecker.Black, out _);
+                    // Обновляем состояние доски
+                    Move.MoveChecker(randomChecker, selectedPosition, out bool switchTurn);
 
-                    // Если у шашки есть доступные ходы, прерываем цикл
-                    if (availableMoves.Count > 0)
+                    // Добавляем задержку перед отрисовкой
+                    await Task.Delay(1000); // Задержка в 1 секунду (1000 миллисекунд)
+                    if (brokenChecker != null)
                     {
-                        int randomMoveIndex = availableMoves[random.Next(availableMoves.Count)]; // Выбираем случайный ход
-                        (int x, int y) = Position.FromIndex(randomMoveIndex);
-                        Position selectedPosition = new Position(x, y);
-                        Move.CanMoveChecker(randomChecker, selectedPosition, out Checker brokenChecker);
-
-                        // Обновляем состояние доски
-                        Move.MoveChecker(randomChecker, selectedPosition, out bool switchTurn);
-
-                        // Добавляем задержку перед отрисовкой
                         await Task.Delay(1000); // Задержка в 1 секунду (1000 миллисекунд)
-                        if (brokenChecker != null)
-                        {
-                            await Task.Delay(1000); // Задержка в 1 секунду (1000 миллисекунд)
-                            GameState.Delete(brokenChecker);
-                            brokenChecker.DeleteFromGame();
-                            _changeImage(brokenChecker, brokenChecker.GetPosition(), brokenChecker.GetPosition());
-                        }   
-                        // Удаление и отрисовка шашки
-                        _changeImage(randomChecker, selectedPosition, oldPosition);
+                        GameState.Delete(brokenChecker);
+                        brokenChecker.DeleteFromGame();
+                        _changeImage(brokenChecker, brokenChecker.GetPosition(), brokenChecker.GetPosition());
+                    }   
+                    // Удаление и отрисовка шашки
+                    _changeImage(randomChecker, selectedPosition, oldPosition);
 
-                        // Переключаем ход
-                        GameState.SwitchTurn();
+                    // Переключаем ход
+                    GameState.SwitchTurn();
+                    CurrentPlayerTextBlock.Text = $"Ходит: {(GameState.Turn == ColorChecker.White ? "Белый" : "Черный")}";
+                    _StartPlayerTimer(GameState.Turn);
 
-                        // Проверяем условие окончания игры после хода бота
-                        if (GameState.GameIsEnded(out ColorChecker winner, out string reason))
+                    // Проверяем условие окончания игры после хода бота
+                    if (GameState.GameIsEnded(out ColorChecker winner, out string reason))
+                    {
+                        if (winner == ColorChecker.White)
                         {
-                            if (winner == ColorChecker.White)
-                            {
-                                // Сохраняем время таймера белого игрока под его логином
-                                SaveWhitePlayerTime(_username, _password);
-                            }
-                            MessageBox.Show(reason, "Game is ended", MessageBoxButton.OK, MessageBoxImage.Information);
-                            new MenuWindow(_username, _password).Show();
-                            this.Close();
-                            return;
+                            // Сохраняем время таймера белого игрока под его логином
+                            SaveWhitePlayerTime(_username, _password,true);
                         }
-
-                        // Выход из метода, если ход был выполнен успешно
+                        else
+                        {
+                            SaveWhitePlayerTime(_username, _password,false);
+                        }
+                        MessageBox.Show(reason, "Game is ended", MessageBoxButton.OK, MessageBoxImage.Information);
+                        new MenuWindow(_username, _password).Show();
+                        this.Close();
                         return;
                     }
-                } while (true);
-            }
-            else
-            {
-                MessageBox.Show("No checkers available for the current player.");
-            }
+
+                    // Выход из метода, если ход был выполнен успешно
+                    return;
+                }
+            } while (true);
         }
+        else
+        {
+            MessageBox.Show("No checkers available for the current player.");
+        }
+    }
+}
 
 
-
-        private void SaveWhitePlayerTime(string username, string password)
+        private void SaveWhitePlayerTime(string username, string password, bool isVictory)
         {
             string filePath = "D:\\rider repos\\checkers\\CheckersUI\\Assets\\users1.txt";
-            string dataToWrite = $"{username},{password},{_whitePlayerTimeElapsed.ToString(@"hh\:mm\:ss")}";
+            string dataToWrite = $"{username},{password},{_whitePlayerTimeElapsed.ToString(@"hh\:mm\:ss")},{(isVictory ? "1,0" : "0,1")}"; // Если победа - увеличиваем количество побед, иначе увеличиваем количество поражений
 
             if (File.Exists(filePath))
             {
@@ -313,17 +327,15 @@ namespace CheckersUI
                 for (int i = 0; i < existingData.Length; i++)
                 {
                     string[] parts = existingData[i].Split(',');
-                    if (parts.Length == 3 && parts[0] == username && parts[1] == password)
+                    if (parts.Length >= 5 && parts[0] == username && parts[1] == password)
                     {
-                        // Найден пользователь, сравниваем время
-                        TimeSpan existingTime = TimeSpan.Parse(parts[2]);
-                        TimeSpan newTime = _whitePlayerTimeElapsed;
+                        // Найден пользователь, обновляем данные
+                        int victories = int.Parse(parts[3]) + (isVictory ? 1 : 0); // Увеличиваем количество побед
+                        int losses = int.Parse(parts[4]) + (isVictory ? 0 : 1); // Увеличиваем количество поражений
 
-                        // Если новое время меньше текущего, обновляем запись
-                        if (newTime < existingTime)
-                        {
-                            existingData[i] = dataToWrite; // Обновляем запись с новым временем
-                        }
+                        // Обновляем запись с новыми данными
+                        existingData[i] = $"{username},{password},{_whitePlayerTimeElapsed.ToString(@"hh\:mm\:ss")},{victories},{losses}";
+
                         userFound = true;
                         break;
                     }
