@@ -1,3 +1,3 @@
-# Checkers on C# with WPF
+# Шашки на C# WPF
 
-You can play checkers with your friend on your computer 
+Игра против бота и игра с другом на одном компьютере
