@@ -22,3 +22,15 @@ D:\rider repos\Checkers\CheckersCore\obj\Debug\net8.0\CheckersCore.dll
 D:\rider repos\Checkers\CheckersCore\obj\Debug\net8.0\refint\CheckersCore.dll
 D:\rider repos\Checkers\CheckersCore\obj\Debug\net8.0\CheckersCore.pdb
 D:\rider repos\Checkers\CheckersCore\obj\Debug\net8.0\ref\CheckersCore.dll
+D:\rider repos\checkersWPF\CheckersCore\bin\Debug\net8.0\CheckersCore.deps.json
+D:\rider repos\checkersWPF\CheckersCore\bin\Debug\net8.0\CheckersCore.dll
+D:\rider repos\checkersWPF\CheckersCore\bin\Debug\net8.0\CheckersCore.pdb
+D:\rider repos\checkersWPF\CheckersCore\obj\Debug\net8.0\CheckersCore.GeneratedMSBuildEditorConfig.editorconfig
+D:\rider repos\checkersWPF\CheckersCore\obj\Debug\net8.0\CheckersCore.AssemblyInfoInputs.cache
+D:\rider repos\checkersWPF\CheckersCore\obj\Debug\net8.0\CheckersCore.AssemblyInfo.cs
+D:\rider repos\checkersWPF\CheckersCore\obj\Debug\net8.0\CheckersCore.csproj.CoreCompileInputs.cache
+D:\rider repos\checkersWPF\CheckersCore\obj\Debug\net8.0\CheckersCore.sourcelink.json
+D:\rider repos\checkersWPF\CheckersCore\obj\Debug\net8.0\CheckersCore.dll
+D:\rider repos\checkersWPF\CheckersCore\obj\Debug\net8.0\refint\CheckersCore.dll
+D:\rider repos\checkersWPF\CheckersCore\obj\Debug\net8.0\CheckersCore.pdb
+D:\rider repos\checkersWPF\CheckersCore\obj\Debug\net8.0\ref\CheckersCore.dll

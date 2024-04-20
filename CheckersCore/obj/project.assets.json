@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\rider repos\\Checkers\\CheckersCore\\CheckersCore.csproj",
+      "projectUniqueName": "D:\\rider repos\\checkersWPF\\CheckersCore\\CheckersCore.csproj",
       "projectName": "CheckersCore",
-      "projectPath": "D:\\rider repos\\Checkers\\CheckersCore\\CheckersCore.csproj",
+      "projectPath": "D:\\rider repos\\checkersWPF\\CheckersCore\\CheckersCore.csproj",
       "packagesPath": "C:\\Users\\пк\\.nuget\\packages\\",
-      "outputPath": "D:\\rider repos\\Checkers\\CheckersCore\\obj\\",
+      "outputPath": "D:\\rider repos\\checkersWPF\\CheckersCore\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\пк\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -61,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

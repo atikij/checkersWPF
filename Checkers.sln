@@ -12,6 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{24756DB3-FB78-4326-A3C6-C88EB6738DCE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1BA8B4C3-EC41-4F1B-96E5-A5F2378B2A9E} = {1BA8B4C3-EC41-4F1B-96E5-A5F2378B2A9E}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +31,10 @@ Global
 		{5FADD07D-58A3-4F8B-85C5-8A6249A3C10D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FADD07D-58A3-4F8B-85C5-8A6249A3C10D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FADD07D-58A3-4F8B-85C5-8A6249A3C10D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24756DB3-FB78-4326-A3C6-C88EB6738DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24756DB3-FB78-4326-A3C6-C88EB6738DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24756DB3-FB78-4326-A3C6-C88EB6738DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24756DB3-FB78-4326-A3C6-C88EB6738DCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

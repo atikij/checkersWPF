@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CheckersUI
-build_property.ProjectDir = D:\rider repos\Checkers\CheckersUI\
+build_property.ProjectDir = D:\rider repos\checkersWPF\CheckersUI\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

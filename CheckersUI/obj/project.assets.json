@@ -32,11 +32,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\rider repos\\Checkers\\CheckersUI\\CheckersUI.csproj",
+      "projectUniqueName": "D:\\rider repos\\checkersWPF\\CheckersUI\\CheckersUI.csproj",
       "projectName": "CheckersUI",
-      "projectPath": "D:\\rider repos\\Checkers\\CheckersUI\\CheckersUI.csproj",
+      "projectPath": "D:\\rider repos\\checkersWPF\\CheckersUI\\CheckersUI.csproj",
       "packagesPath": "C:\\Users\\пк\\.nuget\\packages\\",
-      "outputPath": "D:\\rider repos\\Checkers\\CheckersUI\\obj\\",
+      "outputPath": "D:\\rider repos\\checkersWPF\\CheckersUI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\пк\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -53,8 +53,8 @@
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "projectReferences": {
-            "D:\\rider repos\\Checkers\\CheckersCore\\CheckersCore.csproj": {
-              "projectPath": "D:\\rider repos\\Checkers\\CheckersCore\\CheckersCore.csproj"
+            "D:\\rider repos\\checkersWPF\\CheckersCore\\CheckersCore.csproj": {
+              "projectPath": "D:\\rider repos\\checkersWPF\\CheckersCore\\CheckersCore.csproj"
             }
           }
         }
@@ -87,7 +87,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
