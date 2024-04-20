@@ -49,7 +49,7 @@ namespace TestProject1
             Assert.AreEqual(expectedChecker, actualChecker);
         }
 
-        // Тест на проверку индексатора, который должен удалять шашку, если передано значение null
+        // Тест на проверку индексатора, который должен удалять шашку, если передано значение null.
         [Test]
         public void Indexer_SetNullChecker_RemovesChecker()
         {
