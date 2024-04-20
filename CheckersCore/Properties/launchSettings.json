@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "CheckersCore": {
+      "commandName": "Project"
+    },
+    "Профиль 1": {
+      "commandName": "Executable",
+      "executablePath": "D:\\rider repos\\checkersWPF\\CheckersUI\\bin\\Debug\\net8.0-windows\\CheckersUI.exe"
+    }
+  }
+}
