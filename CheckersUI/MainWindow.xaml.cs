@@ -27,10 +27,12 @@ namespace CheckersUI
         private TimeSpan _blackPlayerTimeElapsed;
         private string _username;
         private string _password;
+        private bool _typeGame;//true против человек, false против бота
 
-        public MainWindow(string username,string password)
+        public MainWindow(string username,string password, bool typeGame)
         {
             InitializeComponent();
+            _typeGame = typeGame;
             _username = username;
             _password = password;
             
@@ -38,13 +40,11 @@ namespace CheckersUI
 
             GameState.StartGame();
             
-            // Инициализация таймера для белого игрока
             _whitePlayerTimer = new DispatcherTimer();
             _whitePlayerTimer.Interval = TimeSpan.FromSeconds(1);
             _whitePlayerTimer.Tick += _WhitePlayerTimer_Tick;
             _whitePlayerTimeElapsed = TimeSpan.Zero;
 
-            // Инициализация таймера для черного игрока
             _blackPlayerTimer = new DispatcherTimer();
             _blackPlayerTimer.Interval = TimeSpan.FromSeconds(1);
             _blackPlayerTimer.Tick += _BlackPlayerTimer_Tick;
@@ -56,14 +56,12 @@ namespace CheckersUI
         
         private void _WhitePlayerTimer_Tick(object sender, EventArgs e)
         {
-            // Обновление времени для белого игрока
             _whitePlayerTimeElapsed = _whitePlayerTimeElapsed.Add(TimeSpan.FromSeconds(1));
             WhitePlayerTimerTextBlock.Text = _whitePlayerTimeElapsed.ToString(@"mm\:ss");
         }
 
         private void _BlackPlayerTimer_Tick(object sender, EventArgs e)
         {
-            // Обновление времени для черного игрока
             _blackPlayerTimeElapsed = _blackPlayerTimeElapsed.Add(TimeSpan.FromSeconds(1));
             BlackPlayerTimerTextBlock.Text = _blackPlayerTimeElapsed.ToString(@"mm\:ss");
         }
@@ -92,7 +90,7 @@ namespace CheckersUI
 
         private void _selectChecker(Checker? checker)
         {
-            #pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+            #pragma warning disable CS8601 //Возможно, назначение-ссылка, допускающее значение NULL.
             _selectedChecker = checker;
         }
 
@@ -167,7 +165,6 @@ namespace CheckersUI
             if (GameState.Turn != checker.Color)
                 return;
 
-            // Обновление информации о текущем игроке
             CurrentPlayerTextBlock.Text = $"Ходит: {(GameState.Turn == ColorChecker.White ? "Белый" : "Черный")}";
 
             HighLighter.ShowHighLight(checker);
@@ -182,21 +179,17 @@ namespace CheckersUI
 
             if (File.Exists(filePath))
             {
-                // Считываем существующие данные из файла
                 string[] existingData = File.ReadAllLines(filePath);
                 bool userFound = false;
 
-                // Идем по каждой строке ищем пользователя
                 for (int i = 0; i < existingData.Length; i++)
                 {
                     string[] parts = existingData[i].Split(',');
                     if (parts.Length >= 5 && parts[0] == username && parts[1] == password)
                     {
-                        // Найден пользователь, обновляем данные
                         int victories = int.Parse(parts[3]) + (isVictory ? 1 : 0); // Увеличиваем количество побед
                         int losses = int.Parse(parts[4]) + (isVictory ? 0 : 1); // Увеличиваем количество поражений
 
-                        // Обновляем запись с новыми данными
                         existingData[i] = $"{username},{password},{_whitePlayerTimeElapsed.ToString(@"hh\:mm\:ss")},{victories},{losses}";
 
                         userFound = true;
@@ -204,7 +197,6 @@ namespace CheckersUI
                     }
                 }
 
-                // Если пользователь не найден, добавляем новую запись
                 if (!userFound)
                 {
                     List<string> newData = existingData.ToList();
@@ -212,12 +204,10 @@ namespace CheckersUI
                     existingData = newData.ToArray();
                 }
 
-                // Записываем обновленные данные в файл
                 File.WriteAllLines(filePath, existingData);
             }
             else
             {
-                // Если файл не существует, создаем новый и записываем данные
                 File.WriteAllText(filePath, dataToWrite);
             }
         }
@@ -266,16 +256,139 @@ namespace CheckersUI
                 this.Close();
                 return;
             }
-
-
-            // Возобновление таймера следующего игрока
+            
             _StartPlayerTimer(GameState.Turn);
 
-            // Обновление информации о текущем игроке
             CurrentPlayerTextBlock.Text = $"Ходит: {(GameState.Turn == ColorChecker.White ? "Белый" : "Черный")}";
 
             _selectChecker(null);
+
+            if (_typeGame == false)
+                MakeMove();
         }
+        
+        private async Task MakeMove()
+        {
+            if (GameState.Turn == ColorChecker.Black)
+            {
+                var checkers = Board.Instance.GetCheckersByColor(GameState.Turn);
+
+                if (checkers != null && checkers.Count > 0)
+                {
+                    bool hasTakenMove = false;
+
+                    foreach (var checker in checkers)
+                    {
+                        List<int> availableMoves = Move.GetAvaibleMovesIndex(checker, checker.Color == ColorChecker.Black, out _);
+                        Position oldPosition = checker.GetPosition();
+
+                        if (availableMoves.Count > 0)
+                        {
+                            foreach (int moveIndex in availableMoves)
+                            {
+                                (int x, int y) = Position.FromIndex(moveIndex);
+                                Position selectedPosition = new Position(x, y);
+                                Move.CanMoveChecker(checker, selectedPosition, out Checker brokenChecker);
+
+                                if (brokenChecker != null)
+                                {
+                                    Move.MoveChecker(checker, selectedPosition, out bool switchTurn);
+                                    GameState.Delete(brokenChecker);
+                                    brokenChecker.DeleteFromGame();
+                                    await Task.Delay(1000);
+                                    _changeImage(brokenChecker, brokenChecker.GetPosition(), brokenChecker.GetPosition());
+                                    _changeImage(checker, selectedPosition, oldPosition);
+                                    GameState.SwitchTurn();
+                                    CurrentPlayerTextBlock.Text = $"Ходит: {(GameState.Turn == ColorChecker.White ? "Белый" : "Черный")}";
+                                    _StartPlayerTimer(GameState.Turn);
+
+                                    if (GameState.GameIsEnded(out ColorChecker winner, out string reason))
+                                    {
+                                        if (winner == ColorChecker.White)
+                                        {
+                                            SaveWhitePlayerTime(_username, _password, true);
+                                        }
+                                        else
+                                        {
+                                            SaveWhitePlayerTime(_username, _password, false);
+                                        }
+                                        MessageBox.Show(reason, "Game is ended", MessageBoxButton.OK, MessageBoxImage.Information);
+                                        new MenuWindow(_username, _password).Show();
+                                        this.Close();
+                                        return;
+                                    }
+
+                                    hasTakenMove = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!hasTakenMove)
+                    { 
+                        Random random = new Random(); 
+                        Checker randomChecker; 
+                        Position oldPosition;
+                        do 
+                        { 
+                            randomChecker = checkers[random.Next(checkers.Count)];
+                            oldPosition = randomChecker.GetPosition();
+
+                            List<int> availableMoves = Move.GetAvaibleMovesIndex(randomChecker, randomChecker.Color == ColorChecker.Black, out _);
+
+                            if (availableMoves.Count > 0)
+                            {
+                                int randomMoveIndex = availableMoves[random.Next(availableMoves.Count)];
+                                (int x, int y) = Position.FromIndex(randomMoveIndex);
+                                Position selectedPosition = new Position(x, y);
+                                Move.CanMoveChecker(randomChecker, selectedPosition, out Checker brokenChecker);
+
+                                Move.MoveChecker(randomChecker, selectedPosition, out bool switchTurn);
+
+                                await Task.Delay(1000);
+                                if (brokenChecker != null)
+                                {
+                                    await Task.Delay(1000);
+                                    GameState.Delete(brokenChecker);
+                                    brokenChecker.DeleteFromGame();
+                                    _changeImage(brokenChecker, brokenChecker.GetPosition(), brokenChecker.GetPosition());
+                                }   
+
+                                _changeImage(randomChecker, selectedPosition, oldPosition);
+
+                                GameState.SwitchTurn();
+                                CurrentPlayerTextBlock.Text = $"Ходит: {(GameState.Turn == ColorChecker.White ? "Белый" : "Черный")}";
+                                _StartPlayerTimer(GameState.Turn);
+
+                                if (GameState.GameIsEnded(out ColorChecker winner, out string reason))
+                                {
+                                    if (winner == ColorChecker.White)
+                                    {
+                                        SaveWhitePlayerTime(_username, _password,true);
+                                    }
+                                    else 
+                                    {
+                                        SaveWhitePlayerTime(_username, _password,false);
+                                    }
+                                    MessageBox.Show(reason, "Game is ended", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    new MenuWindow(_username, _password).Show();
+                                    this.Close();
+                                    return;
+                                }
+
+                                return;
+                            }
+                        } while (true);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Нет доступных ходов.");
+                }
+            }
+        }
+
         
         private void _StartPlayerTimer(ColorChecker playerColor)
         {

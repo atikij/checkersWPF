@@ -15,13 +15,12 @@ namespace CheckersUI
             InitializeComponent();
             _username = username;
             _password = password;
-            // Здесь вы можете использовать loggedInUser для отображения имени в UI
             LoggedInUserTextBlock.Text = _username;
         }
 
         private void StartGame(object s, RoutedEventArgs e)
         {
-            new MainWindow(_username,_password).Show();
+            new MainWindow(_username,_password,true).Show();
             this.Close();
         }
 
@@ -33,7 +32,8 @@ namespace CheckersUI
         
         private void Bot(object sender, RoutedEventArgs e)
         {
-            new BotWindow(_username,_password).Show();
+            //new BotWindow(_username,_password).Show();
+            new MainWindow(_username,_password,false).Show();
             this.Close();
         }
     }

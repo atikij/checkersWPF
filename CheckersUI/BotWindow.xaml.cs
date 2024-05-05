@@ -35,13 +35,11 @@ namespace CheckersUI
 
             GameState.StartGame();
             
-            // Инициализация таймера для белого игрока
             _whitePlayerTimer = new DispatcherTimer();
             _whitePlayerTimer.Interval = TimeSpan.FromSeconds(1);
             _whitePlayerTimer.Tick += _WhitePlayerTimer_Tick;
             _whitePlayerTimeElapsed = TimeSpan.Zero;
 
-            // Инициализация таймера для черного игрока
             _blackPlayerTimer = new DispatcherTimer();
             _blackPlayerTimer.Interval = TimeSpan.FromSeconds(1);
             _blackPlayerTimer.Tick += _BlackPlayerTimer_Tick;
@@ -50,20 +48,17 @@ namespace CheckersUI
             _whitePlayerTimer.Start();
             CurrentPlayerTextBlock.Text = $"Ходит: Белый";
 
-            // Инициализация доски и осветления
             ResetGame();
         }
 
         private void _WhitePlayerTimer_Tick(object sender, EventArgs e)
         {
-            // Обновление времени для белого игрока
             _whitePlayerTimeElapsed = _whitePlayerTimeElapsed.Add(TimeSpan.FromSeconds(1));
             WhitePlayerTimerTextBlock.Text = _whitePlayerTimeElapsed.ToString(@"mm\:ss");
         }
 
         private void _BlackPlayerTimer_Tick(object sender, EventArgs e)
         {
-            // Обновление времени для черного игрока
             _blackPlayerTimeElapsed = _blackPlayerTimeElapsed.Add(TimeSpan.FromSeconds(1));
             BlackPlayerTimerTextBlock.Text = _blackPlayerTimeElapsed.ToString(@"mm\:ss");
         }
@@ -164,7 +159,6 @@ namespace CheckersUI
             if (GameState.Turn != checker.Color)
                 return;
 
-            // Обновление информации о текущем игроке
             CurrentPlayerTextBlock.Text = $"Ходит: {(GameState.Turn == ColorChecker.White ? "Белый" : "Черный")}";
 
             HighLighter.ShowHighLight(checker);
@@ -205,7 +199,6 @@ namespace CheckersUI
             {
                 if (winner == ColorChecker.White)
                 {
-                    // Сохраняем время таймера белого игрока под его логином
                     SaveWhitePlayerTime(_username, _password,true);
                 }
                 else
@@ -218,98 +211,157 @@ namespace CheckersUI
                 return;
             }
 
-            // Возобновление таймера следующего игрока
             _StartPlayerTimer(GameState.Turn);
 
-            // Обновление информации о текущем игроке
             CurrentPlayerTextBlock.Text = $"Ходит: {(GameState.Turn == ColorChecker.White ? "Белый" : "Черный")}";
 
             _selectChecker(null);
-
-            // Вызываем ход бота
-            //BotMove();
+            
             MakeMove();
         }
         
-public async void MakeMove()
-{
-    // Проверяем, является ли текущий игрок ботом
-    if (GameState.Turn == ColorChecker.Black)
-    {
-        var checkers = Board.Instance.GetCheckersByColor(GameState.Turn);
-
-        if (checkers != null && checkers.Count > 0)
+        public async Task MakeMove()
         {
-            Random random = new Random();
-            Checker randomChecker;
-            Position oldPosition;
-
-            do
+            // Проверяем, является ли текущий игрок ботом
+            if (GameState.Turn == ColorChecker.Black)
             {
-                randomChecker = checkers[random.Next(checkers.Count)]; // Выбираем случайную шашку
-                oldPosition = randomChecker.GetPosition();
+                var checkers = Board.Instance.GetCheckersByColor(GameState.Turn);
 
-                // Получаем доступные ходы для выбранной шашки
-                List<int> availableMoves = Move.GetAvaibleMovesIndex(randomChecker, randomChecker.Color == ColorChecker.Black, out _);
-
-                // Проверяем наличие доступных ходов
-                if (availableMoves.Count > 0)
+                if (checkers != null && checkers.Count > 0)
                 {
-                    // Если у шашки есть доступные ходы, выбираем случайный ход и делаем его
-                    int randomMoveIndex = availableMoves[random.Next(availableMoves.Count)]; // Выбираем случайный ход
-                    (int x, int y) = Position.FromIndex(randomMoveIndex);
-                    Position selectedPosition = new Position(x, y);
-                    Move.CanMoveChecker(randomChecker, selectedPosition, out Checker brokenChecker);
+                    bool hasTakenMove = false; // Флаг, показывающий, совершен ли ход съедания
 
-                    // Обновляем состояние доски
-                    Move.MoveChecker(randomChecker, selectedPosition, out bool switchTurn);
-
-                    // Добавляем задержку перед отрисовкой
-                    await Task.Delay(1000); // Задержка в 1 секунду (1000 миллисекунд)
-                    if (brokenChecker != null)
+                    foreach (var checker in checkers)
                     {
-                        await Task.Delay(1000); // Задержка в 1 секунду (1000 миллисекунд)
-                        GameState.Delete(brokenChecker);
-                        brokenChecker.DeleteFromGame();
-                        _changeImage(brokenChecker, brokenChecker.GetPosition(), brokenChecker.GetPosition());
-                    }   
-                    // Удаление и отрисовка шашки
-                    _changeImage(randomChecker, selectedPosition, oldPosition);
-
-                    // Переключаем ход
-                    GameState.SwitchTurn();
-                    CurrentPlayerTextBlock.Text = $"Ходит: {(GameState.Turn == ColorChecker.White ? "Белый" : "Черный")}";
-                    _StartPlayerTimer(GameState.Turn);
-
-                    // Проверяем условие окончания игры после хода бота
-                    if (GameState.GameIsEnded(out ColorChecker winner, out string reason))
-                    {
-                        if (winner == ColorChecker.White)
+                        // Получаем доступные ходы для текущей шашки
+                        List<int> availableMoves = Move.GetAvaibleMovesIndex(checker, checker.Color == ColorChecker.Black, out _);
+                        Position oldPosition = checker.GetPosition();
+                        // Проверяем наличие доступных ходов
+                        if (availableMoves.Count > 0)
                         {
-                            // Сохраняем время таймера белого игрока под его логином
-                            SaveWhitePlayerTime(_username, _password,true);
+                            // Перебираем доступные ходы
+                            foreach (int moveIndex in availableMoves)
+                            {
+                                (int x, int y) = Position.FromIndex(moveIndex);
+                                Position selectedPosition = new Position(x, y);
+                                Move.CanMoveChecker(checker, selectedPosition, out Checker brokenChecker);
+
+                                // Если есть возможность съесть шашку
+                                if (brokenChecker != null)
+                                {
+                                    // Обновляем состояние доски после съедания шашки
+                                    Move.MoveChecker(checker, selectedPosition, out bool switchTurn);
+                                    GameState.Delete(brokenChecker);
+                                    brokenChecker.DeleteFromGame();
+                                    await Task.Delay(1000); // Задержка в 1 секунду (1000 миллисекунд)
+                                    _changeImage(brokenChecker, brokenChecker.GetPosition(), brokenChecker.GetPosition());
+                                    
+                                    // Удаление и отрисовка шашки
+                                    _changeImage(checker, selectedPosition, oldPosition);
+
+                                    // Переключаем ход
+                                    GameState.SwitchTurn();
+                                    CurrentPlayerTextBlock.Text = $"Ходит: {(GameState.Turn == ColorChecker.White ? "Белый" : "Черный")}";
+                                    _StartPlayerTimer(GameState.Turn);
+
+                                    // Проверяем условие окончания игры после хода бота
+                                    if (GameState.GameIsEnded(out ColorChecker winner, out string reason))
+                                    {
+                                        if (winner == ColorChecker.White)
+                                        {
+                                            // Сохраняем время таймера белого игрока под его логином
+                                            SaveWhitePlayerTime(_username, _password, true);
+                                        }
+                                        else
+                                        {
+                                            SaveWhitePlayerTime(_username, _password, false);
+                                        }
+                                        MessageBox.Show(reason, "Game is ended", MessageBoxButton.OK, MessageBoxImage.Information);
+                                        new MenuWindow(_username, _password).Show();
+                                        this.Close();
+                                        return;
+                                    }
+
+                                    // Устанавливаем флаг, что был совершен ход съедания
+                                    hasTakenMove = true;
+                                    break; // Выходим из цикла, так как съедание уже выполнено
+                                }
+                            }
                         }
-                        else
-                        {
-                            SaveWhitePlayerTime(_username, _password,false);
-                        }
-                        MessageBox.Show(reason, "Game is ended", MessageBoxButton.OK, MessageBoxImage.Information);
-                        new MenuWindow(_username, _password).Show();
-                        this.Close();
-                        return;
                     }
 
-                    // Выход из метода, если ход был выполнен успешно
-                    return;
+                    // Если ни одна из шашек не съела другую, бот совершает обычный ход
+                    if (!hasTakenMove)
+                    { 
+                        Random random = new Random(); 
+                        Checker randomChecker; 
+                        Position oldPosition;
+                        do 
+                        { 
+                            randomChecker = checkers[random.Next(checkers.Count)]; // Выбираем случайную шашку
+                            oldPosition = randomChecker.GetPosition();
+
+                            // Получаем доступные ходы для выбранной шашки
+                            List<int> availableMoves = Move.GetAvaibleMovesIndex(randomChecker, randomChecker.Color == ColorChecker.Black, out _);
+
+                            // Проверяем наличие доступных ходов
+                            if (availableMoves.Count > 0)
+                            {
+                                // Если у шашки есть доступные ходы, выбираем случайный ход и делаем его
+                                int randomMoveIndex = availableMoves[random.Next(availableMoves.Count)]; // Выбираем случайный ход
+                                (int x, int y) = Position.FromIndex(randomMoveIndex);
+                                Position selectedPosition = new Position(x, y);
+                                Move.CanMoveChecker(randomChecker, selectedPosition, out Checker brokenChecker);
+
+                                // Обновляем состояние доски
+                                Move.MoveChecker(randomChecker, selectedPosition, out bool switchTurn);
+
+                                // Добавляем задержку перед отрисовкой
+                                await Task.Delay(1000); // Задержка в 1 секунду (1000 миллисекунд)
+                                if (brokenChecker != null)
+                                {
+                                    await Task.Delay(1000); // Задержка в 1 секунду (1000 миллисекунд)
+                                    GameState.Delete(brokenChecker);
+                                    brokenChecker.DeleteFromGame();
+                                    _changeImage(brokenChecker, brokenChecker.GetPosition(), brokenChecker.GetPosition());
+                                }   
+                                // Удаление и отрисовка шашки
+                                _changeImage(randomChecker, selectedPosition, oldPosition);
+
+                                // Переключаем ход
+                                GameState.SwitchTurn();
+                                CurrentPlayerTextBlock.Text = $"Ходит: {(GameState.Turn == ColorChecker.White ? "Белый" : "Черный")}";
+                                _StartPlayerTimer(GameState.Turn);
+
+                                // Проверяем условие окончания игры после хода бота
+                                if (GameState.GameIsEnded(out ColorChecker winner, out string reason))
+                                {
+                                    if (winner == ColorChecker.White)
+                                    {
+                                        // Сохраняем время таймера белого игрока под его логином
+                                        SaveWhitePlayerTime(_username, _password,true);
+                                    }
+                                    else 
+                                    {
+                                        SaveWhitePlayerTime(_username, _password,false);
+                                    }
+                                    MessageBox.Show(reason, "Game is ended", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    new MenuWindow(_username, _password).Show();
+                                    this.Close();
+                                    return;
+                                }
+                                // Выход из метода, если ход был выполнен успешно
+                                return;
+                            }
+                        } while (true);
+                    }
                 }
-            } while (true);
+                else
+                {
+                    MessageBox.Show("Нет доступных ходов.");
+                }
+            }
         }
-        else
-        {
-            MessageBox.Show("No checkers available for the current player.");
-        }
-    }
-}
 
 
         private void SaveWhitePlayerTime(string username, string password, bool isVictory)

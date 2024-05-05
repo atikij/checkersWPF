@@ -17,10 +17,8 @@ namespace CheckersUI
             _username = username;
             _password = password;
 
-            // Чтение данных из файла
             List<PlayerStats> playerStatsList = ReadPlayerStatsFromFile("D:\\rider repos\\checkers\\CheckersUI\\Assets\\users1.txt");
 
-            // Привязка списка игроков к ListView в каждой вкладке
             TimeListView.ItemsSource = playerStatsList
                 .OrderBy(player => TimeSpan.Parse(player.BestTime))
                 .ToList();
@@ -46,15 +44,12 @@ namespace CheckersUI
 
             if (File.Exists(filePath))
             {
-                // Чтение строк из файла
                 string[] lines = File.ReadAllLines(filePath);
 
-                // Обработка каждой строки
                 foreach (string line in lines)
                 {
                     string[] parts = line.Split(',');
 
-                    // Проверка наличия времени у игрока
                     string username = parts[0];
                     string password = parts.Length > 1 ? parts[1] : "";
                     string time = parts.Length > 2 ? parts[2] : "-";

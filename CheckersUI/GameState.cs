@@ -8,7 +8,6 @@ namespace CheckersUI
     public class GameState
     {
         public readonly int CountCheckers;
-        //public readonly Board Board;
 
         public Color Turn { get; private set; } = Color.White;
 
@@ -38,6 +37,7 @@ namespace CheckersUI
             }
 
         }
+        
 
         public void Delete(Checker checker)
         {
@@ -87,8 +87,6 @@ namespace CheckersUI
         public void SwitchTurn()
         {
             Turn = Turn == Color.White ? Color.Black : Color.White;
-
-            //((MainWindow)Application.Current.MainWindow).TextBlockCurrentColor.Text = Turn == Color.White ? "White" : "Black";
         }
     }
 }
